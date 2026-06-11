@@ -1,0 +1,2503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NewTeeth 神龈粉</title>
+  <meta name="description" content="NewTeeth 神龈粉，全马独家首创医用级纯中药草本修复牙粉，帮助改善牙龈与口腔问题。">
+  <link rel="icon" href="NewTeeth Logo white.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #13056e;
+      --secondary: #d95130;
+      --white: #ffffff;
+      --surface: #f8f8fc;
+      --surface-alt: #eef2ff;
+      --text: #111111;
+      --muted: #5f6480;
+      --border: rgba(19, 5, 110, 0.12);
+      --shadow: 0 18px 45px rgba(19, 5, 110, 0.08);
+      --shadow-strong: 0 24px 60px rgba(19, 5, 110, 0.16);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --radius-sm: 14px;
+      --container: 1180px;
+      --transition: 240ms ease;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans SC", sans-serif;
+      color: var(--text);
+      background: var(--surface);
+      line-height: 1.6;
+      /* Disable highlighting */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+      /* Disable dragging */
+      -webkit-user-drag: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(calc(100% - 32px), var(--container));
+      margin: 0 auto;
+    }
+
+    .announcement-bar {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      background: var(--secondary);
+      color: var(--white);
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .navbar {
+      position: sticky;
+      top: var(--announcement-height, 0px);
+      z-index: 50;
+      background: rgba(19, 5, 110, 0.96);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(8, 4, 41, 0.18);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 78px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--white);
+      font-size: 1.05rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06));
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+      font-size: 1.35rem;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-link {
+      position: relative;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 0.96rem;
+      font-weight: 500;
+      padding: 10px 14px;
+      border-radius: 999px;
+      transition: background-color var(--transition), color var(--transition), transform var(--transition);
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.14);
+      transform: translateY(-1px);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-button,
+    .floating-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      transition: transform var(--transition), box-shadow var(--transition), background-color var(--transition);
+    }
+
+    .icon-button {
+      background: var(--white);
+      color: var(--secondary);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+    }
+
+    .icon-button:hover,
+    .floating-whatsapp:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--white);
+      padding: 0;
+    }
+
+    .menu-toggle svg,
+    .icon-button svg,
+    .social-link svg,
+    .floating-whatsapp svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top right, rgba(217, 81, 48, 0.38), transparent 26%),
+        radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.12), transparent 34%),
+        var(--primary);
+      color: var(--white);
+      min-height: calc(100svh - var(--hero-offset, 0px));
+      display: flex;
+      align-items: center;
+      padding: 48px 0 56px;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 380px;
+      height: 380px;
+      right: -120px;
+      top: -80px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.4), transparent);
+    }
+
+    .hero::after {
+      width: 260px;
+      height: 260px;
+      left: -90px;
+      bottom: -60px;
+      background: linear-gradient(145deg, rgba(217, 81, 48, 0.55), transparent);
+    }
+
+    .hero-inner {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 26px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.65rem, 5vw, 5rem);
+      line-height: 1.05;
+      font-weight: 900;
+    }
+
+    .hero h2 {
+      margin: 16px 0 0;
+      font-size: clamp(1.4rem, 2.7vw, 2.4rem);
+      line-height: 1.25;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.94);
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 1.08rem;
+      color: rgba(255, 255, 255, 0.84);
+      max-width: 760px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 0 28px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: transform var(--transition), box-shadow var(--transition), background-color var(--transition), color var(--transition), border-color var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--secondary);
+      color: var(--white);
+      box-shadow: 0 18px 30px rgba(217, 81, 48, 0.34);
+    }
+
+    .btn-primary:hover {
+      background: #c34729;
+      box-shadow: 0 20px 34px rgba(217, 81, 48, 0.42);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      color: var(--white);
+      border: 1px solid rgba(255, 255, 255, 0.38);
+      background: transparent;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .btn-light {
+      background: var(--white);
+      color: var(--secondary);
+      box-shadow: 0 14px 26px rgba(255, 255, 255, 0.28);
+    }
+
+    .btn-light:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero-media {
+      position: relative;
+        width: min(96vw, 1320px);
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-image {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      margin: 0 auto;
+      filter: drop-shadow(0 28px 40px rgba(3, 2, 20, 0.28));
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .hero-copy > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-media::before,
+    .hero-media::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+
+    .hero-media::before {
+      width: 180px;
+      height: 180px;
+      top: 6%;
+      right: 8%;
+      background: radial-gradient(circle, rgba(217, 81, 48, 0.34), transparent 70%);
+    }
+
+    .hero-media::after {
+      width: 150px;
+      height: 150px;
+      left: 6%;
+      bottom: 8%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.22), transparent 70%);
+    }
+
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+    section {
+      padding: 84px 0;
+    }
+
+    .section-light {
+      background: var(--surface-alt);
+    }
+
+    .section-header {
+      max-width: 760px;
+      margin-bottom: 34px;
+    }
+
+    .section-label {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: var(--secondary);
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section-header h3 {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 3rem);
+      line-height: 1.15;
+      color: var(--primary);
+    }
+
+    .section-header p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .benefits-strip {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .benefit-item,
+    .usp-card,
+    .product-card,
+    .package-card,
+    .review-card,
+    .story-card,
+    .stats-bar,
+    .result-callout {
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+
+    .benefit-item {
+      background: var(--white);
+      padding: 22px 18px;
+      text-align: center;
+      min-width: 148px;
+      border: 1px solid var(--border);
+    }
+
+    .benefit-item .emoji {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+      color: var(--primary);
+    }
+
+    .benefit-item span:last-child {
+      display: block;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.97rem;
+    }
+
+    .packages-grid,
+    .shop-grid,
+    .usp-grid,
+    .reviews-grid,
+    .footer-grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .testimonial-section-title {
+      margin: 40px 0 20px;
+      font-size: 1.4rem;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .testimonial-carousel {
+      display: flex;
+      overflow-x: auto;
+      gap: 16px;
+      padding-bottom: 24px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 24px;
+    }
+
+    .testimonial-carousel::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .testimonial-carousel::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 4px;
+      opacity: 0.5;
+    }
+
+    .testimonial-carousel::-webkit-scrollbar-track {
+      background: rgba(19, 5, 110, 0.05);
+      border-radius: 4px;
+    }
+
+    .carousel-item {
+      flex: 0 0 auto;
+      width: 280px;
+      height: 480px;
+      scroll-snap-align: start;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      background: #000;
+      position: relative;
+    }
+
+    .carousel-item img,
+    .carousel-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .carousel-item img {
+      background: var(--white);
+    }
+
+    .sound-toggle {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      backdrop-filter: blur(4px);
+      transition: background 0.2s;
+    }
+
+    .sound-toggle:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .sound-toggle svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .packages-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: stretch;
+    }
+
+    .sets-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .package-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: var(--white);
+      padding: 30px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .package-card.featured {
+      border: 2px solid var(--secondary);
+      transform: scale(1.03);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .package-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(19, 5, 110, 0.08);
+      color: var(--primary);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .package-card.featured .package-badge {
+      background: rgba(217, 81, 48, 0.12);
+      color: var(--secondary);
+    }
+
+    .package-card h4,
+    .product-card h4,
+    .usp-card h4,
+    .review-card h4,
+    .story-content h4,
+    .faq-question span {
+      margin: 16px 0 10px;
+      font-size: 1.4rem;
+      line-height: 1.3;
+    }
+
+    .package-promo {
+      color: var(--secondary);
+      font-size: 0.98rem;
+      font-weight: 700;
+      min-height: 28px;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .price {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .price-old {
+      color: #8a8fa6;
+      text-decoration: line-through;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .package-list {
+      padding: 0;
+      margin: 0 0 28px;
+      list-style: none;
+      color: var(--muted);
+      flex: 1;
+    }
+
+    .package-list li + li {
+      margin-top: 10px;
+    }
+
+    .package-card .btn {
+      margin-top: auto;
+      align-self: flex-start;
+    }
+
+    .shop-grid,
+    .usp-grid,
+    .reviews-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .product-card,
+    .usp-card,
+    .review-card,
+    .story-card,
+    .stats-bar,
+    .faq-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+    }
+
+    .product-card,
+    .usp-card,
+    .review-card {
+      padding: 24px;
+    }
+    
+    .product-card {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .product-card .btn {
+      margin-top: auto;
+    }
+    
+    .product-price {
+      margin-bottom: 16px;
+      font-weight: 700;
+      color: var(--secondary);
+      font-size: 1.2rem;
+    }
+
+    .product-image,
+    .story-photo {
+      display: grid;
+      place-items: center;
+      min-height: 240px;
+      border-radius: 24px;
+      background:
+        linear-gradient(145deg, rgba(19, 5, 110, 0.08), rgba(217, 81, 48, 0.12)),
+        #e9edf7;
+      color: var(--primary);
+      font-weight: 700;
+      text-align: center;
+      padding: 18px;
+    }
+
+    .product-image {
+      min-height: 230px;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image::before,
+    .story-photo::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border-radius: 18px;
+      border: 1px dashed rgba(19, 5, 110, 0.18);
+    }
+
+    .product-image span,
+    .story-photo span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .story-photo {
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .story-photo img {
+      width: 100%;
+      height: 100%;
+      min-height: 320px;
+      object-fit: cover;
+      position: relative;
+      z-index: 1;
+    }
+
+    .product-price {
+      margin: 8px 0 18px;
+      font-size: 1.45rem;
+      color: var(--secondary);
+      font-weight: 900;
+    }
+
+    .usp-card .emoji,
+    .review-stars {
+      font-size: 1.8rem;
+    }
+
+    .usp-card p,
+    .product-card p,
+    .review-card p,
+    .story-text p,
+    .story-award p,
+    .timeline-step p,
+    .faq-answer p,
+    .footer-column p,
+    .footer-links a,
+    .contact-item {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .story-card {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.88fr) minmax(0, 1.12fr);
+      gap: 32px;
+      padding: 28px;
+    }
+
+    .story-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .story-text + .story-text {
+      margin-top: 22px;
+    }
+
+    .story-text.story-highlight {
+      padding: 28px 32px;
+      border-radius: 32px;
+      background: linear-gradient(90deg, rgba(19, 5, 110, 0.1) 0%, rgba(255, 255, 255, 0.94) 48%, rgba(217, 81, 48, 0.12) 100%);
+      box-shadow: inset 0 0 0 1px rgba(19, 5, 110, 0.08);
+    }
+
+    .story-text.story-highlight p {
+      color: #5d6686;
+      font-size: 1.04rem;
+      line-height: 1.8;
+    }
+
+    .story-text.story-highlight p:first-child {
+      color: var(--primary);
+      font-size: 1.12rem;
+      font-weight: 800;
+      line-height: 1.65;
+    }
+
+    .story-kicker {
+      color: var(--secondary);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .story-subtitle {
+      color: var(--primary);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .story-quote {
+      margin-top: 22px;
+      padding: 18px 20px;
+      border-left: 4px solid var(--secondary);
+      border-radius: 0 18px 18px 0;
+      background: rgba(217, 81, 48, 0.06);
+      color: var(--primary);
+      font-size: 1.02rem;
+      font-weight: 700;
+    }
+
+    .story-award {
+      margin-top: 22px;
+      padding: 20px;
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(19, 5, 110, 0.06), rgba(217, 81, 48, 0.1));
+    }
+
+    .story-award strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--primary);
+      font-size: 1.02rem;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 10px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 34px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(19, 5, 110, 0.15), rgba(217, 81, 48, 0.32), rgba(19, 5, 110, 0.15));
+    }
+
+    .timeline-step {
+      position: relative;
+      padding: 0 14px;
+      text-align: center;
+    }
+
+    .step-number {
+      position: relative;
+      z-index: 1;
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--primary);
+      color: var(--white);
+      font-size: 1.35rem;
+      font-weight: 900;
+      box-shadow: 0 16px 28px rgba(19, 5, 110, 0.22);
+    }
+
+    .timeline-step p {
+      font-size: 0.97rem;
+    }
+
+    .result-callout {
+      margin-top: 34px;
+      padding: 28px;
+      background: var(--secondary);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .result-callout p {
+      margin: 0;
+      font-size: 1.12rem;
+      font-weight: 700;
+      max-width: 700px;
+    }
+
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .stat-cell {
+      padding: 24px 20px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(19, 5, 110, 0.04), rgba(217, 81, 48, 0.04));
+    }
+
+    .stat-cell strong {
+      display: block;
+      font-size: 1.55rem;
+      color: var(--primary);
+      font-weight: 900;
+    }
+
+    .stat-cell span {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .review-card h4 {
+      margin-top: 14px;
+      font-size: 1.15rem;
+      color: var(--primary);
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .faq-item {
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .faq-question {
+      width: 100%;
+      background: var(--white);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      text-align: left;
+      padding: 24px 26px;
+    }
+
+    .faq-question span {
+      margin: 0;
+      font-size: 1.04rem;
+    }
+
+    .faq-icon {
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(19, 5, 110, 0.08);
+      font-size: 1.2rem;
+      transition: transform var(--transition), background-color var(--transition), color var(--transition);
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      background: rgba(217, 81, 48, 0.12);
+      color: var(--secondary);
+    }
+
+    .faq-answer {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 320ms ease;
+      background: linear-gradient(180deg, rgba(19, 5, 110, 0.02), rgba(19, 5, 110, 0.04));
+    }
+
+    .faq-item.open .faq-answer {
+      grid-template-rows: 1fr;
+    }
+
+    .faq-answer-inner {
+      overflow: hidden;
+    }
+
+    .faq-answer p {
+      padding: 0 26px 24px;
+      font-size: 0.98rem;
+    }
+
+    .footer {
+      background: var(--primary);
+      color: var(--white);
+      padding-top: 64px;
+    }
+
+    .footer-grid {
+      grid-template-columns: 1.2fr 1fr 0.9fr 1fr;
+      padding-bottom: 38px;
+    }
+
+    .footer-column h4 {
+      margin: 0 0 16px;
+      font-size: 1.1rem;
+    }
+
+    .footer-column p,
+    .footer-links a,
+    .contact-item {
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 12px;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 18px 0 26px;
+    }
+
+    .footer-bottom-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 0.94rem;
+    }
+
+    .socials {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.12);
+      transition: transform var(--transition), background-color var(--transition);
+    }
+
+    .social-link:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .floating-whatsapp {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 60;
+      width: 62px;
+      height: 62px;
+      background: #25d366;
+      color: var(--white);
+      box-shadow: 0 18px 32px rgba(37, 211, 102, 0.34);
+    }
+
+    .floating-whatsapp::before {
+      content: attr(data-tooltip);
+      position: absolute;
+      right: 74px;
+      white-space: nowrap;
+      background: rgba(17, 17, 17, 0.9);
+      color: var(--white);
+      font-size: 0.88rem;
+      padding: 9px 12px;
+      border-radius: 999px;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity var(--transition), transform var(--transition);
+      pointer-events: none;
+    }
+
+    .floating-whatsapp:hover::before {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 620ms ease, transform 620ms ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1100px) {
+      .nav-menu {
+        gap: 4px;
+      }
+
+      .nav-link {
+        font-size: 0.9rem;
+        padding: 9px 10px;
+      }
+
+      .story-card {
+        grid-template-columns: 1fr;
+      }
+
+      .benefits-strip,
+      .packages-grid,
+      .sets-grid,
+      .shop-grid,
+      .usp-grid,
+      .reviews-grid,
+      .footer-grid,
+      .timeline,
+      .stats-bar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .timeline::before {
+        display: none;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .nav-inner {
+        min-height: 72px;
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 16px;
+        right: 16px;
+        display: grid;
+        justify-content: stretch;
+        gap: 6px;
+        padding: 14px;
+        border-radius: 24px;
+        background: rgba(19, 5, 110, 0.98);
+        box-shadow: 0 24px 48px rgba(6, 3, 32, 0.28);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity var(--transition), visibility var(--transition), transform var(--transition);
+      }
+
+      .nav-menu.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(12px);
+      }
+
+      .nav-link {
+        width: 100%;
+        padding: 14px 16px;
+      }
+
+      .hero {
+        padding: 40px 0 48px;
+      }
+
+      .hero-copy {
+        gap: 16px;
+      }
+
+      .result-callout,
+      .footer-bottom-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 640px) {
+      section {
+        padding: 68px 0;
+      }
+
+      .container {
+        width: min(calc(100% - 24px), var(--container));
+      }
+
+      .announcement-bar {
+        font-size: 0.84rem;
+      }
+
+      .brand {
+        font-size: 0.94rem;
+      }
+
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+
+      .hero h2 {
+        font-size: 1.28rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .hero-actions,
+      .packages-grid,
+      .sets-grid,
+      .shop-grid,
+      .usp-grid,
+      .reviews-grid,
+      .footer-grid,
+      .timeline,
+      .stats-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions {
+        width: 100%;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+
+      .benefits-wrapper {
+        overflow-x: auto;
+        padding-bottom: 6px;
+        margin-right: -6px;
+      }
+
+      .benefits-strip {
+        display: flex;
+        gap: 14px;
+        min-width: max-content;
+      }
+
+      .package-card.featured {
+        transform: none;
+      }
+
+      .timeline-step {
+        text-align: left;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 68px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .step-number {
+        margin: 0;
+      }
+
+      .faq-question {
+        padding: 20px 18px;
+      }
+
+      .faq-answer p {
+        padding: 0 18px 20px;
+      }
+
+      .floating-whatsapp::before {
+        display: none;
+      }
+    }
+
+    /* Lightbox Styles */
+    .lightbox {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.9);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .lightbox.active {
+      opacity: 1; pointer-events: auto;
+    }
+    .lightbox img {
+      max-width: 90%; max-height: 90%; border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-strong);
+    }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer;
+    }
+    
+    .carousel-item img,
+    .carousel-item video {
+      cursor: pointer;
+    }
+
+    /* Image Comparison Slider */
+    .comparison-slider {
+      position: relative;
+      width: 100%;
+      max-width: 480px; /* Made smaller */
+      margin: 0 auto;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-strong);
+      user-select: none;
+      background: #000;
+      touch-action: pan-y;
+    }
+
+    .comparison-slider img.comparison-before {
+      display: block;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+    }
+
+    .comparison-slider img.comparison-after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    .comparison-after {
+      clip-path: inset(0 50% 0 0); /* Initial 50% */
+      z-index: 2;
+    }
+
+    .comparison-handle {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%; /* Initial 50% */
+      width: 4px;
+      background: rgba(255, 255, 255, 0.9);
+      cursor: ew-resize;
+      z-index: 3;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .comparison-button {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+
+    .comparison-button svg {
+      width: 24px;
+      height: 24px;
+      stroke: #333;
+    }
+
+    .comparison-slider.is-dragging .comparison-button {
+      transform: scale(1.1);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Cart Styles */
+    .cart-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); z-index: 100;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .cart-overlay.active { opacity: 1; pointer-events: auto; }
+    
+    .cart-sidebar {
+      position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100%;
+      background: white; z-index: 101; transition: right 0.3s;
+      padding: 24px; box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+      display: flex; flex-direction: column;
+    }
+    .cart-sidebar.active { right: 0; }
+    
+    .cart-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 16px;
+    }
+    .cart-header h3 { margin: 0; font-size: 1.4rem; color: var(--primary); }
+    .cart-close { font-size: 1.5rem; cursor: pointer; color: var(--muted); }
+    
+    .cart-items { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+    .cart-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 16px; border-bottom: 1px solid var(--surface-alt);
+    }
+    .cart-item-info h4 { margin: 0 0 4px 0; font-size: 1rem; color: var(--text); }
+    .cart-item-price { color: var(--secondary); font-weight: bold; }
+    .cart-item-qty { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+    .qty-btn { background: var(--surface-alt); border: none; width: 24px; height: 24px; border-radius: 4px; cursor: pointer; font-weight: bold; color: var(--primary); }
+    
+    .cart-footer { padding-top: 16px; border-top: 1px solid var(--border); margin-top: auto; }
+    .cart-total { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; margin-bottom: 16px; color: var(--secondary); }
+    
+    .cart-count {
+      position: absolute; top: 0px; right: 0px;
+      background: var(--secondary); color: white;
+      font-size: 0.75rem; font-weight: bold;
+      width: 20px; height: 20px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transform: translate(25%, -25%);
+    }
+
+    .floating-cart {
+      position: fixed;
+      right: 22px;
+      bottom: 94px; /* Above whatsapp */
+      z-index: 60;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: var(--white);
+      box-shadow: 0 16px 32px rgba(19, 5, 110, 0.32);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform var(--transition);
+      cursor: pointer;
+    }
+    .floating-cart:hover {
+      transform: translateY(-4px) scale(1.04);
+    }
+    .floating-cart svg {
+      width: 28px; height: 28px; fill: none; stroke: currentColor;
+    }
+    .floating-cart::before {
+      content: attr(data-tooltip);
+      position: absolute;
+      right: 74px;
+      white-space: nowrap;
+      background: rgba(17, 17, 17, 0.9);
+      color: var(--white);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(4px);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .floating-cart:hover::before {
+      opacity: 1; transform: translateY(0);
+    }
+    .package-card .btn { margin-top: auto; }
+  </style>
+
+</head>
+<body>
+  <div class="announcement-bar">🇲🇾 全马独家首创 No.1 医用级纯中药草本修复牙粉 ✨ 4年内帮助40,000人改善口腔问题</div>
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#top" class="brand" aria-label="NewTeeth 神龈粉首页">
+        <img src="NewTeeth Logo white.png" alt="NewTeeth Logo" style="height: 38px; width: auto;">
+      </a>
+
+      <nav class="nav-menu" id="nav-menu" aria-label="主导航">
+        <a class="nav-link" href="#packages">神龈粉优惠配套</a>
+        <a class="nav-link" href="#shop">店铺</a>
+        <a class="nav-link" href="#sets">配套</a>
+        <a class="nav-link" href="#story">我们的故事</a>
+        <a class="nav-link" href="#howto">如何使用？</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="icon-button" href="javascript:void(0)" onclick="toggleCart()" aria-label="购物车" style="position: relative;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          <div class="cart-count">0</div>
+        </a>
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-menu">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v2H4V7Zm0 8h16v2H4v-2Zm0-4h16v2H4v-2Z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-copy reveal is-visible">
+          <div class="eyebrow">全马口腔护理热销品牌</div>
+          <h1>全马独家首创 No.1</h1>
+        </div>
+
+        <div class="hero-media reveal">
+          <img class="hero-image" src="newteethhero.png" alt="NewTeeth 神龈粉主视觉图">
+        </div>
+
+        <div class="hero-copy reveal">
+          <h2>医用级 纯中药 草本修复牙粉</h2>
+          <p>✨4年内帮助超过40,000人改善口腔问题✨</p>
+        </div>
+
+        <div class="hero-actions reveal">
+          <a class="btn btn-primary" href="#packages">立即购买</a>
+          <a class="btn btn-secondary" href="#story">了解更多</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">核心改善方向</span>
+          <h3>NewTeeth 医用级中药牙粉</h3>
+          <p>从牙龈修复到稳固牙齿，再到清新口气与日常清洁，NewTeeth 以草本修护逻辑覆盖更全面的口腔需求。</p>
+        </div>
+        <div class="benefits-wrapper reveal">
+          <div class="benefits-strip">
+            <div class="benefit-item"><span class="emoji">🦷</span><span>修复牙龈萎缩</span></div>
+            <div class="benefit-item"><span class="emoji">💪</span><span>稳固松牙</span></div>
+            <div class="benefit-item"><span class="emoji">🔥</span><span>改善牙龈肿痛</span></div>
+            <div class="benefit-item"><span class="emoji">🩸</span><span>改善牙龈出血</span></div>
+            <div class="benefit-item"><span class="emoji">😬</span><span>改善牙龈敏感</span></div>
+            <div class="benefit-item"><span class="emoji">🪨</span><span>牙结石</span></div>
+            <div class="benefit-item"><span class="emoji">💨</span><span>牙黄口臭</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="packages" class="section-light">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">优惠配套</span>
+          <h3>神龈粉优惠配套</h3>
+          <p>针对不同使用阶段设计，从初次尝试到完整疗程，一次选到适合自己的方案。</p>
+        </div>
+        <div class="packages-grid">
+          <article class="package-card reveal">
+            <span class="package-badge">入门之选</span>
+            <h4>初体验配套</h4>
+            <p class="package-promo">适合首次体验草本修护</p>
+            <div class="price-row">
+              <span class="price">RM 138</span>
+            </div>
+            <ul class="package-list">
+              <li>神龈粉 x1</li>
+            </ul>
+            <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
+          </article>
+
+          <article class="package-card featured reveal">
+            <span class="package-badge">最受欢迎 🔥</span>
+            <h4>疗程配套</h4>
+            <p class="package-promo">买二送一再送一</p>
+            <div class="price-row">
+              <span class="price">RM 218</span>
+              <span class="price-old">RM 444</span>
+            </div>
+            <ul class="package-list">
+              <li>神龈粉 x2</li>
+              <li>万毛牙刷 x1</li>
+            </ul>
+            <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
+          </article>
+
+          <article class="package-card reveal">
+            <span class="package-badge">超值之选</span>
+            <h4>4月配套</h4>
+            <p class="package-promo">买三送二</p>
+            <div class="price-row">
+              <span class="price">RM 308</span>
+              <span class="price-old">RM 690</span>
+            </div>
+            <ul class="package-list">
+              <li>神龈粉 x3</li>
+              <li>神龈粉 x2</li>
+              <li>赠品: 化妆包 或 HH口腔护理五件套</li>
+            </ul>
+            <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="shop">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">店铺精选</span>
+          <h3>店铺</h3>
+          <p>从核心产品到辅助护理工具，一站式打造更完整的口腔保养组合。</p>
+        </div>
+        <div class="shop-grid">
+          <article class="product-card reveal">
+            <div class="product-image"><span>产品图片占位区<br>神龈粉</span></div>
+            <h4>神龈粉</h4>
+            <div class="product-price">RM138</div>
+            <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
+          </article>
+          <article class="product-card reveal">
+            <div class="product-image"><span>产品图片占位区<br>HH万毛纤维牙刷</span></div>
+            <h4>HH万毛纤维牙刷</h4>
+            <div class="product-price">RM30</div>
+            <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
+          </article>
+          <article class="product-card reveal">
+            <div class="product-image"><span>产品图片占位区<br>高频电动冲牙器</span></div>
+            <h4>高频电动冲牙器（牙龈萎缩/敏感牙齿专用）</h4>
+            <div class="product-price">RM199</div>
+            <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="awards">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">荣誉奖项</span>
+          <h3>超级健康品牌——荣获口齿护理品牌大奖</h3>
+          <p>经过4年的辛勤耕耘，我们荣幸地获得超级健康品牌提名。<br>我们将继续致力于为所有马来西亚人提供天然的口腔护理产品</p>
+        </div>
+        <div class="story-photo reveal" style="text-align: center; margin-top: 24px;">
+          <!-- 图片预留位置 -->
+          <img src="" alt="超级健康品牌提名" style="display: inline-block; border-radius: var(--radius-lg); box-shadow: var(--shadow); max-width: 100%;">
+        </div>
+      </div>
+    </section>
+
+    <section id="sets" class="section-light">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">配套</span>
+          <h3>配套方案</h3>
+          <p>整理自配套导航内容，方便直接查看两组主要方案与价格信息。</p>
+        </div>
+        <div class="sets-grid">
+          <article class="package-card featured reveal">
+            <span class="package-badge">Set 1</span>
+            <h4>疗程配套</h4>
+            <p class="package-promo">买二送一再送一</p>
+            <div class="price-row">
+              <span class="price">RM 218</span>
+            </div>
+            <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
+          </article>
+
+          <article class="package-card reveal">
+            <span class="package-badge">Set 2</span>
+            <h4>4月配套</h4>
+            <p class="package-promo">买三送二</p>
+            <ul class="package-list">
+              <li>再送 Free Gift 化妆包 / HH口腔护理五件套</li>
+            </ul>
+            <div class="price-row">
+              <span class="price">RM 308</span>
+            </div>
+            <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-light">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">品牌优势</span>
+          <h3>为什么选择 NewTeeth？</h3>
+          <p>以草本配方、精细工艺与官方认证为核心，构建更值得长期坚持的日常口腔护理方案。</p>
+        </div>
+        <div class="usp-grid">
+          <article class="usp-card reveal">
+            <div class="emoji">🌿</div>
+            <h4>14种中药草本精华</h4>
+            <p>结合中医固齿神方与天然草本，温和修复不刺激。</p>
+          </article>
+          <article class="usp-card reveal">
+            <div class="emoji">🇨🇭</div>
+            <h4>瑞士气流碎粉技术</h4>
+            <p>1000目超细颗粒，深入牙缝彻底清洁，不伤牙釉质。</p>
+          </article>
+          <article class="usp-card reveal">
+            <div class="emoji">✅</div>
+            <h4>马来西亚卫生部（KKM）认证</h4>
+            <p>安全有效，通过严格检测，放心使用。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="story">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">品牌初心</span>
+          <h3>我们的故事</h3>
+        </div>
+        <div class="story-card reveal">
+          <div class="story-photo"><img src="CEO.jpg" alt="HH老板 创办人照片"></div>
+          <div class="story-content">
+            <div class="story-kicker">创办人: HH老板</div>
+            <h4>让更多人拥有稳定、健康、安心的笑容</h4>
+            <div class="story-quote">好的产品＋好的团队＋利他之心＋选对赛道＋坚持＝成功方程式</div>
+            <div class="story-text">
+              <p>正能量经营，并在个人成长与事业中坚持“树高千丈不忘根，人若辉煌莫忘恩”的理念。</p>
+              <p style="margin-top: 14px;">命由天定,运由己造。人的命运掌握在自己手中,自己的前途要靠自己创造,只要肯努力奋斗,和拥有良好的品德修养,就能改变命运。</p>
+            </div>
+            <div class="story-award">
+              <strong>🏆 超级健康品牌 — 荣获口齿护理品牌大奖</strong>
+              <p>经过4年的辛勤耕耘，我们荣幸地获得超级健康品牌提名。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="slogan" class="section-light">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">品牌标语</span>
+          <h3>我们的理念</h3>
+        </div>
+        <div class="story-card reveal">
+          <div class="story-photo"><img src="packaging.jpeg" alt="NewTeeth 包装展示图"></div>
+          <div class="story-content">
+            <h4>我们相信，每个人都应该每天都拥有自信的笑容</h4>
+            <div class="story-text">
+              <p>我们相信，每个人都应该每天都拥有自信的笑容。我们注意到，许多人正饱受牙齿松动、牙龈肿痛，牙龈敏感，牙龈出血，口臭问题的困扰——这些问题不仅影响他们的健康，更会影响他们的自信和日常生活。</p>
+              <p style="margin-top: 14px;">并非人们不想改善口腔健康，而是市场上缺乏一款安全、有效且能在修复牙龈问题的同时改善口腔健康的产品。正因如此，我们创立了NewTeeth——致力于研发温和、安全且真正有效的口齿护理方案，帮助人们重拾自信笑容。</p>
+            </div>
+            <div class="story-text story-highlight">
+              <p>帮助人们解决牙龈问题——自创立起便如此。这就是我们的初心，也是我们坚持至今的原因。</p>
+              <p style="margin-top: 14px;">四年过去了，我们见证了真正的改变。超过 30 万人改善了牙龈问题、提升了自信、改善了日常生活，甚至惠及了整个家庭。</p>
+              <p style="margin-top: 14px;">从创立之初，我们就始终秉持着我们的使命：提供安全、温和、天然且真正有效的口腔护理产品——价格亲民，不含刺激性成分。</p>
+              <p style="margin-top: 14px;">因为每个人都值得拥有健康稳固的牙齿，并享受微笑带来的愉悦。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="howto" class="section-light">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">使用说明</span>
+          <h3>如何使用？</h3>
+          <p>怎样正确使用 NewTeeth 神龈粉</p>
+        </div>
+        <div class="timeline">
+          <div class="timeline-step reveal">
+            <div class="step-number">1</div>
+            <p>打开盒子，打开盖子</p>
+          </div>
+          <div class="timeline-step reveal">
+            <div class="step-number">2</div>
+            <p>沾湿牙刷，甩掉多余的水份</p>
+          </div>
+          <div class="timeline-step reveal">
+            <div class="step-number">3</div>
+            <p>沾进牙粉内</p>
+          </div>
+          <div class="timeline-step reveal">
+            <div class="step-number">4</div>
+            <p>跟平常刷牙一样刷两到三分钟，直接代替牙膏</p>
+          </div>
+          <div class="timeline-step reveal">
+            <div class="step-number">5</div>
+            <p>漱口冲掉，刷完口腔冰冰凉凉很舒服</p>
+          </div>
+        </div>
+        <div class="result-callout reveal">
+          <p>✨ 见证改变！牙龈修复与牙齿稳固，焕发真正自信笑容 🦷 效果看得见，用过都说稳！</p>
+          <a class="btn btn-light" href="#packages">立即购买！</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="comparison">
+      <div class="container">
+        <div class="section-header reveal" style="text-align: center; max-width: 500px; margin-left: auto; margin-right: auto;">
+          <span class="section-label">效果对比</span>
+          <h3>见证改变！✨</h3>
+          <p style="font-size: 1.1rem; color: var(--text); font-weight: 500; margin-bottom: 24px;">牙龈修复与牙齿稳固，焕发真正自信笑容 🦷💫<br>效果看得见，用过都说稳！</p>
+        </div>
+
+        <div class="comparison-slider reveal">
+          <img class="comparison-before" src="testimonial/Jennie Before1.jpeg" alt="Before">
+          <img class="comparison-after" src="testimonial/Jennie After1.jpeg" alt="After">
+          <div class="comparison-handle">
+            <div class="comparison-button">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="15" y1="18" x2="9" y2="12"></line>
+                <line x1="9" y1="6" x2="15" y2="12"></line>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal" style="text-align: center; margin-top: 36px;">
+          <a class="btn btn-primary" href="#packages">立即购买！</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-light">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">用户反馈</span>
+          <h3>用户好评</h3>
+          <p>从真实用户口碑到市场覆盖，持续累积的信任是品牌最直接的证明。</p>
+        </div>
+        <div class="stats-bar reveal">
+          <div class="stat-cell"><strong>40,000+</strong><span>改善口腔问题</span></div>
+          <div class="stat-cell"><strong>No.1</strong><span>全马独家首创</span></div>
+          <div class="stat-cell"><strong>4年</strong><span>专注研发</span></div>
+          <div class="stat-cell"><strong>KKM</strong><span>认证</span></div>
+        </div>
+        <div class="reviews-grid">
+          <article class="review-card reveal">
+            <div class="review-stars">⭐⭐⭐⭐⭐</div>
+            <h4>陈小姐</h4>
+            <p>用了两个星期后，牙龈出血真的减少很多，刷牙时也不再那么敏感，口气也明显更清新。</p>
+          </article>
+          <article class="review-card reveal">
+            <div class="review-stars">⭐⭐⭐⭐⭐</div>
+            <h4>黄先生</h4>
+            <p>以前吃冷热食物都会酸，现在坚持使用后舒服很多，最重要是刷完真的有种很干净的感觉。</p>
+          </article>
+          <article class="review-card reveal">
+            <div class="review-stars">⭐⭐⭐⭐⭐</div>
+            <h4>林太太</h4>
+            <p>买给家人一起用，大家都说刷完凉凉的很舒服，我自己也感觉牙齿更稳，回购意愿很高。</p>
+          </article>
+        </div>
+
+        <!-- 图片轮播 -->
+        <h4 class="testimonial-section-title reveal">用户真实对比与反馈</h4>
+        <div class="testimonial-carousel reveal">
+          <div class="carousel-item">
+            <img src="testimonial/513056840_713685928228189_267302444520836039_n.jpg" alt="真实反馈 1" loading="lazy" onclick="openLightbox(this.src)">
+          </div>
+          <div class="carousel-item">
+            <img src="testimonial/516369370_725015727095209_4488206157684639789_n.jpg" alt="真实反馈 2" loading="lazy" onclick="openLightbox(this.src)">
+          </div>
+          <div class="carousel-item">
+            <img src="testimonial/516841311_725591370370978_8681528776946121210_n.jpg" alt="真实反馈 3" loading="lazy" onclick="openLightbox(this.src)">
+          </div>
+          <div class="carousel-item">
+            <img src="testimonial/546589584_775101085420006_6234173641959915640_n.jpg" alt="真实反馈 4" loading="lazy" onclick="openLightbox(this.src)">
+          </div>
+          <div class="carousel-item">
+            <img src="testimonial/547488360_776012751995506_7514813150372175400_n.jpg" alt="真实反馈 5" loading="lazy" onclick="openLightbox(this.src)">
+          </div>
+          <div class="carousel-item">
+            <img src="testimonial/WhatsApp Image 2026-04-16 at 4.23.21 PM.jpeg" alt="真实反馈 6" loading="lazy" onclick="openLightbox(this.src)">
+          </div>
+          <div class="carousel-item">
+            <img src="testimonial/WhatsApp Image 2026-04-16 at 4.23.21 PM-2.jpeg" alt="真实反馈 7" loading="lazy" onclick="openLightbox(this.src)">
+          </div>
+        </div>
+
+        <!-- 视频轮播 -->
+        <h4 class="testimonial-section-title reveal">用户的真实分享视频</h4>
+        <div class="testimonial-carousel reveal">
+          <div class="carousel-item">
+            <video src="testimonial/5月Ashley是嘉淇ya.MOV" autoplay loop muted playsinline aria-label="用户视频分享" onclick="openLightbox(this.src)"></video>
+            <button class="sound-toggle" aria-label="开启声音" onclick="toggleMute(this)">
+              <svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>
+            </button>
+          </div>
+          <div class="carousel-item">
+            <video src="testimonial/compres.mp4" autoplay loop muted playsinline aria-label="用户视频分享" onclick="openLightbox(this.src)"></video>
+            <button class="sound-toggle" aria-label="开启声音" onclick="toggleMute(this)">
+              <svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>
+            </button>
+          </div>
+          <div class="carousel-item">
+            <video src="testimonial/小熊爱吃橘子.MP4" autoplay loop muted playsinline aria-label="用户视频分享" onclick="openLightbox(this.src)"></video>
+            <button class="sound-toggle" aria-label="开启声音" onclick="toggleMute(this)">
+              <svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>
+            </button>
+          </div>
+          <div class="carousel-item">
+            <video src="testimonial/心雨｜马六甲鸡场街早餐店主.mp4" autoplay loop muted playsinline aria-label="用户视频分享" onclick="openLightbox(this.src)"></video>
+            <button class="sound-toggle" aria-label="开启声音" onclick="toggleMute(this)">
+              <svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>
+            </button>
+          </div>
+          <div class="carousel-item">
+            <video src="testimonial/是佳2不是+3.mp4" autoplay loop muted playsinline aria-label="用户视频分享" onclick="openLightbox(this.src)"></video>
+            <button class="sound-toggle" aria-label="开启声音" onclick="toggleMute(this)">
+              <svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>
+            </button>
+          </div>
+          <div class="carousel-item">
+            <video src="testimonial/沈家二姐.mp4" autoplay loop muted playsinline aria-label="用户视频分享" onclick="openLightbox(this.src)"></video>
+            <button class="sound-toggle" aria-label="开启声音" onclick="toggleMute(this)">
+              <svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>
+            </button>
+          </div>
+          <div class="carousel-item">
+            <video src="testimonial/爱分享的Gin.mp4" autoplay loop muted playsinline aria-label="用户视频分享" onclick="openLightbox(this.src)"></video>
+            <button class="sound-toggle" aria-label="开启声音" onclick="toggleMute(this)">
+              <svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>
+            </button>
+          </div>
+          <div class="carousel-item">
+            <video src="testimonial/爱料理的钟老师.MOV" autoplay loop muted playsinline aria-label="用户视频分享" onclick="openLightbox(this.src)"></video>
+            <button class="sound-toggle" aria-label="开启声音" onclick="toggleMute(this)">
+              <svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>
+            </button>
+          </div>
+          <div class="carousel-item">
+            <video src="testimonial/臭美黄豆在线营业.mp4" autoplay loop muted playsinline aria-label="用户视频分享" onclick="openLightbox(this.src)"></video>
+            <button class="sound-toggle" aria-label="开启声音" onclick="toggleMute(this)">
+              <svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>
+            </button>
+          </div>
+          <div class="carousel-item">
+            <video src="testimonial/车模找抹茶.mp4" autoplay loop muted playsinline aria-label="用户视频分享" onclick="openLightbox(this.src)"></video>
+            <button class="sound-toggle" aria-label="开启声音" onclick="toggleMute(this)">
+              <svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>
+            </button>
+          </div>
+          <div class="carousel-item">
+            <video src="testimonial/鱼飞不会飞.mp4" autoplay loop muted playsinline aria-label="用户视频分享" onclick="openLightbox(this.src)"></video>
+            <button class="sound-toggle" aria-label="开启声音" onclick="toggleMute(this)">
+              <svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  <section id="faq">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">常见问题</span>
+          <h3>常见问题</h3>
+          <p>把用户最关心的使用方式、效果周期与适用人群整理在这里，方便快速了解。</p>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item reveal open">
+            <button class="faq-question" type="button" aria-expanded="true">
+              <span>Q1: New Teeth牙粉与牙膏或其他口齿产品有何不同？</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>NewTeeth牙粉稳固牙齿的效果是普通牙膏的5倍。<br><br>它专为马来西亚人的口腔需求和饮食习惯而研发，采用14种中药草本精华、结合中医固齿神方与天然草本成分调配而成。<br><br>在修复牙龈的同时，它还能帮助稳固牙根，消炎清热，预防多种口腔问题。<br><br>结合瑞士气流碎粉研磨技术，我们的超细牙粉能够深入牙缝，彻底清洁牙齿，即使是难以触及的部位也能清洁到位。<br><br>New Teeth 不仅仅是护龈，更是对您牙龈健康的全面修复。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Q2: 它可以完全替代牙膏吗？</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner"><p>是的，亲爱的！我们的NewTeeth中药牙粉可以完全替代牙膏。<br><br>不过，我们建议您先将它与您常用的牙膏混合使用——只需先涂抹牙膏，然后蘸取少量牙粉，像往常一样刷牙，即可获得更佳的清洁效果。<br><br>一旦您习惯了这种搭配，就可以放心地单独使用牙粉了。</p></div></div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Q3: 多久才能看到效果？</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner"><p>部分顾客仅需7天即可看到明显的牙齿变稳的效果，而大多数顾客则需1至4个月才能看到明显看到稳固与修复效果，具体时间取决于牙龈问题的严重程度。<br><br>NewTeeth 采用中药草本修复成分，通过温和调理并清除口腔细菌来达到口齿问题，无需药物或刺激性化学成分。<br><br>安全、温和、持久的口齿修复方案，值得信赖。</p></div></div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Q4: 它会损伤牙釉质或牙齿表面吗？</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner"><p>亲爱的，完全不用担心！我们的神龈粉采用1000目超细颗粒配制而成——作为参考，普通面粉的颗粒大小约为90目。<br><br>在获得认证之前，它经过了严格的测试，以确保不会对牙釉质（牙齿的保护层）造成任何划痕或损伤。<br><br>我们的牙粉使用方法与牙膏类似，只是形态不同。它也符合与牙膏相同的高安全性和监管标准，并获得了马来西亚卫生部（KKM）的官方认证。<br><br>所以您可以完全放心使用。</p></div></div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Q5: 停止使用后，我的牙齿会再次摇晃吗？</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner"><p>不，New Teeth 不会导致牙齿反复松动或摇晃。<br><br>我们的配方从根源上调理牙龈，修复并稳固牙齿与牙根的支撑结构。<br><br>不含化学药物或刺激性成分——我们不仅缓解松动问题，更能帮助恢复牙龈的健康。<br><br>此外，New Teeth 可以替代普通牙膏，通过清除口腔细菌，防止其侵蚀牙龈，从而帮助您预防日常牙龈问题的产生。<br><br>温和、有效、持久的护理，让您拥有稳固健康的牙齿。</p></div></div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Q6: 一罐可以用多久？</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner"><p>一罐50克的通常可以使用1到2个月，具体取决于每次的使用量。<br><br>平均而言，我们的大多数客户每1到2个月会再次购买。</p></div></div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Q7: 适合儿童使用吗？</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner"><p>是的，已经学会正确刷牙和漱口的儿童可以安全使用NewTeeth牙粉。<br><br>对于10岁及以上的儿童，我们的牙粉可以单独使用，作为日常口腔护理的一部分。<br><br>对于年龄较小的儿童，我们建议搭配牙膏使用，以增强保护效果。<br><br>只需涂抹牙膏，蘸取少量牙粉，然后像往常一样刷牙即可。<br><br>在儿童的生长发育阶段，牙齿更容易蛀牙，因此将牙粉与牙膏搭配使用，有助于修复牙根，预防蛀牙。</p></div></div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Q8: 适合素食者使用吗？</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner"><p>是的，产品采用中药草本配方，不含动物成分，我们致力于秉持最高的安全标准和责任感，因此我们的产品适合素食者放心使用。</p></div></div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Q9: 适用于佩戴牙套、补牙、牙冠、假牙或陶瓷贴面的人吗？</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner"><p>是的！NewTeeth牙粉安全有效，适合佩戴牙套、假牙、牙冠、牙贴面或其他牙龈问题的人士使用。<br><br>我们超细的草本研磨配方温和不刺激，清洁牙齿的同时不会造成刺激或磨损。<br><br>此外，添加的中药草本成分有助于调理牙龈健康，这对任何牙齿松动牙龈敏感的人来说都至关重要。<br><br>温和而有效的选择，呵护每一位笑容。</p></div></div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Q10: 它是什么口味的？</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner"><p>我们的牙粉拥有清新的薄荷口味，不苦不涩，大人和孩子都会喜欢。<br><br>每次刷牙后，您的口腔都会感觉清新香气，冰冰凉凉的感觉。</p></div></div>
+          </div>
+
+          <div class="faq-item reveal">
+            <button class="faq-question" type="button" aria-expanded="false">
+              <span>Q11: 它能改善口臭或其他口腔问题吗？</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><div class="faq-answer-inner"><p>是的，亲爱的！我们的中药医用级牙粉不仅能稳固牙齿，更重要的是，它还能帮助对抗口腔细菌和炎症，有效去除牙菌斑，防止牙结石堆积——这两点都是口臭的常见原因。<br><br>此外，我们配方中的草本成分有助于平衡口腔环境，这对于保持口气清新和口腔健康至关重要。</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-column">
+        <img src="NewTeeth Logo white.png" alt="NewTeeth Logo" style="height: 48px; margin-bottom: 16px;">
+        <p>全马独创No.1🇲🇾 医用级 纯中药 草本修复牙粉
+2年内帮助30,000人改善口腔问题👍
+已上架全马20+Pharmacy</p>
+      </div>
+      <div class="footer-column">
+        <h4>联系我们</h4>
+        <div class="contact-list">
+          <div class="contact-item">📞 +60 14-798 2886</div>
+          <div class="contact-item">📧 doublehonlinee@gmail.com</div>
+          <div class="contact-item">📍 119b, Jalan Makloom, 10150 George Town, Pulau Pinang</div>
+          <div class="contact-item">🛒 <a href="https://my.shp.ee/FQ3n6Vci" target="_blank" rel="noopener noreferrer">Shopee: https://my.shp.ee/FQ3n6Vci</a></div>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h4>快速链接</h4>
+        <div class="footer-links">
+          <a href="#packages">神龈粉优惠配套</a>
+          <a href="#shop">店铺</a>
+          <a href="#sets">配套</a>
+          <a href="#story">我们的故事</a>
+          <a href="#howto">如何使用？</a>
+          <a href="#faq">常见问题</a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h4>Facebook 专页</h4>
+        <div class="footer-links">
+          <a href="https://www.facebook.com/Newteethmsia" target="_blank" rel="noopener noreferrer">New Teeth 神龈粉 (Main)</a>
+          <a href="https://www.facebook.com/newteethmy" target="_blank" rel="noopener noreferrer">New Teeth 神龈粉 - MY</a>
+          <a href="https://www.facebook.com/SG.Newteeth" target="_blank" rel="noopener noreferrer">New Teeth 中药神龈粉</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <div>© 2025 NewTeeth 神龈粉. 版权所有。</div>
+        <div class="socials" aria-label="社交媒体链接">
+          <a class="social-link" href="https://www.facebook.com/Newteethmsia" target="_blank" rel="noopener noreferrer" aria-label="脸书">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.76c0-.92.26-1.54 1.58-1.54H16.7V4.35c-.29-.04-1.28-.12-2.43-.12-2.41 0-4.06 1.47-4.06 4.18v2.39H7.5V14h2.71v8h3.29Z"/></svg>
+          </a>
+          <a class="social-link" href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.9A3.85 3.85 0 0 0 3.9 7.75v8.5a3.85 3.85 0 0 0 3.85 3.85h8.5a3.85 3.85 0 0 0 3.85-3.85v-8.5a3.85 3.85 0 0 0-3.85-3.85h-8.5Zm8.95 1.43a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.9A3.1 3.1 0 1 0 12 15.1 3.1 3.1 0 0 0 12 8.9Z"/></svg>
+          </a>
+          <a class="social-link" href="https://wa.me/60147982886" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.52 3.48A11.82 11.82 0 0 0 12.07 0C5.54 0 .21 5.33.21 11.86c0 2.09.55 4.13 1.58 5.93L0 24l6.38-1.67a11.75 11.75 0 0 0 5.68 1.45h.01c6.53 0 11.86-5.33 11.86-11.86 0-3.17-1.24-6.14-3.41-8.44Zm-8.45 18.3h-.01a9.77 9.77 0 0 1-4.97-1.36l-.36-.21-3.79.99 1.02-3.69-.23-.38a9.78 9.78 0 0 1-1.5-5.27C2.23 6.42 6.63 2.02 12.07 2.02a9.8 9.8 0 0 1 6.95 2.88 9.8 9.8 0 0 1 2.88 6.96c0 5.43-4.4 9.92-9.83 9.92Zm5.39-7.4c-.29-.15-1.72-.85-1.99-.95-.27-.1-.46-.15-.66.15-.19.29-.75.95-.92 1.15-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.35-1.43-.87-.78-1.46-1.74-1.64-2.03-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.2-.29.29-.49.1-.19.05-.36-.02-.51-.07-.15-.66-1.6-.9-2.2-.24-.58-.48-.5-.66-.5-.17-.01-.36-.01-.56-.01-.19 0-.51.07-.78.36-.27.29-1.02 1-1.02 2.44s1.05 2.83 1.2 3.02c.15.19 2.07 3.16 5.01 4.43.7.3 1.25.48 1.68.61.71.23 1.36.2 1.87.12.57-.08 1.72-.7 1.97-1.37.24-.66.24-1.22.17-1.34-.07-.12-.27-.19-.56-.34Z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <a class="floating-cart" href="javascript:void(0)" onclick="toggleCart()" aria-label="购物车" data-tooltip="查看购物车">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+    <div class="cart-count">0</div>
+  </a>
+  
+  <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h3>我的购物车</h3>
+      <span class="cart-close" onclick="toggleCart()">&times;</span>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <!-- Items dynamically populated here -->
+      <p style="text-align: center; color: var(--muted); margin-top: 40px;">购物车是空的</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>合计：</span>
+        <span id="cart-total-price">RM 0</span>
+      </div>
+      <button class="btn btn-primary" style="width: 100%;" onclick="checkout()">前往结算 (WhatsApp)</button>
+    </div>
+  </div>
+
+  <a class="floating-whatsapp" href="https://wa.me/60147982886" target="_blank" rel="noopener noreferrer" aria-label="立即咨询" data-tooltip="立即咨询">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.52 3.48A11.82 11.82 0 0 0 12.07 0C5.54 0 .21 5.33.21 11.86c0 2.09.55 4.13 1.58 5.93L0 24l6.38-1.67a11.75 11.75 0 0 0 5.68 1.45h.01c6.53 0 11.86-5.33 11.86-11.86 0-3.17-1.24-6.14-3.41-8.44Zm-8.45 18.3h-.01a9.77 9.77 0 0 1-4.97-1.36l-.36-.21-3.79.99 1.02-3.69-.23-.38a9.78 9.78 0 0 1-1.5-5.27C2.23 6.42 6.63 2.02 12.07 2.02a9.8 9.8 0 0 1 6.95 2.88 9.8 9.8 0 0 1 2.88 6.96c0 5.43-4.4 9.92-9.83 9.92Zm5.39-7.4c-.29-.15-1.72-.85-1.99-.95-.27-.1-.46-.15-.66.15-.19.29-.75.95-.92 1.15-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.35-1.43-.87-.78-1.46-1.74-1.64-2.03-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.2-.29.29-.49.1-.19.05-.36-.02-.51-.07-.15-.66-1.6-.9-2.2-.24-.58-.48-.5-.66-.5-.17-.01-.36-.01-.56-.01-.19 0-.51.07-.78.36-.27.29-1.02 1-1.02 2.44s1.05 2.83 1.2 3.02c.15.19 2.07 3.16 5.01 4.43.7.3 1.25.48 1.68.61.71.23 1.36.2 1.87.12.57-.08 1.72-.7 1.97-1.37.24-.66.24-1.22.17-1.34-.07-.12-.27-.19-.56-.34Z"/></svg>
+  </a>
+
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-img" src="" alt="Popup Image" onclick="event.stopPropagation()" style="display: none;">
+    <video id="lightbox-video" src="" controls autoplay playsinline onclick="event.stopPropagation()" style="display: none; max-width: 90%; max-height: 90%; border-radius: var(--radius-lg); box-shadow: var(--shadow-strong);"></video>
+  </div>
+
+  <script>
+    function openLightbox(src) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      const video = document.getElementById('lightbox-video');
+      
+      // Get the true source using URL parsing if needed, but since it's local string endsWith is fine
+      const isVideo = src.toLowerCase().endsWith('.mp4') || src.toLowerCase().endsWith('.mov');
+      
+      if (isVideo) {
+        img.style.display = 'none';
+        img.src = '';
+        video.style.display = 'block';
+        video.src = src;
+        video.play().catch(e => console.log(e));
+      } else {
+        video.style.display = 'none';
+        video.pause();
+        video.src = '';
+        img.style.display = 'block';
+        img.src = src;
+      }
+      
+      lb.classList.add('active');
+    }
+    function closeLightbox() {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      const video = document.getElementById('lightbox-video');
+      
+      lb.classList.remove('active');
+      img.src = '';
+      video.pause();
+      video.src = '';
+    }
+
+    const announcementBar = document.querySelector('.announcement-bar');
+    const navbar = document.querySelector('.navbar');
+    const menuToggle = document.getElementById('menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    const navLinks = Array.from(document.querySelectorAll('.nav-link'));
+    const sections = Array.from(document.querySelectorAll('main section[id]'));
+    const faqItems = Array.from(document.querySelectorAll('.faq-item'));
+    const revealItems = Array.from(document.querySelectorAll('.reveal'));
+
+    const setHeroOffset = () => {
+      const announcementHeight = announcementBar ? announcementBar.offsetHeight : 0;
+      const navbarHeight = navbar ? navbar.offsetHeight : 0;
+      document.documentElement.style.setProperty('--announcement-height', `${announcementHeight}px`);
+      document.documentElement.style.setProperty('--hero-offset', `${announcementHeight + navbarHeight}px`);
+    };
+
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener('click', () => {
+        const isOpen = navMenu.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        document.body.classList.toggle('menu-open', isOpen);
+      });
+
+      navLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          navMenu.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('menu-open');
+        });
+      });
+    }
+
+    const observer = new IntersectionObserver((entries, currentObserver) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        entry.target.classList.add('is-visible');
+        currentObserver.unobserve(entry.target);
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealItems.forEach((item) => {
+      if (!item.classList.contains('is-visible')) {
+        observer.observe(item);
+      }
+    });
+
+    faqItems.forEach((item) => {
+      const question = item.querySelector('.faq-question');
+
+      question.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+
+        faqItems.forEach((entry) => {
+          entry.classList.remove('open');
+          entry.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        });
+
+        if (!isOpen) {
+          item.classList.add('open');
+          question.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    const activateNav = () => {
+      const offset = window.scrollY + 140;
+      let currentId = '';
+
+      sections.forEach((section) => {
+        if (offset >= section.offsetTop && offset < section.offsetTop + section.offsetHeight) {
+          currentId = section.id;
+        }
+      });
+
+      navLinks.forEach((link) => {
+        const target = link.getAttribute('href').replace('#', '');
+        link.classList.toggle('active', target === currentId);
+      });
+    };
+
+    window.addEventListener('scroll', activateNav, { passive: true });
+    window.addEventListener('resize', setHeroOffset);
+    window.addEventListener('load', () => {
+      setHeroOffset();
+      activateNav();
+    });
+    setHeroOffset();
+    activateNav();
+
+
+    // Cart Logic
+    let cart = [];
+
+    function toggleCart() {
+      document.getElementById('cart-overlay').classList.toggle('active');
+      document.getElementById('cart-sidebar').classList.toggle('active');
+    }
+
+    function addToCart(btnElement) {
+      const card = btnElement.closest('article');
+      const name = card.querySelector('h4').innerText;
+      
+      let priceText = "0";
+      const priceEl = card.querySelector('.price') || card.querySelector('.product-price');
+      if (priceEl) {
+        priceText = priceEl.innerText.replace(/[^0-9]/g, '');
+      }
+      const price = parseInt(priceText, 10);
+      
+      const existingItem = cart.find(item => item.name === name);
+      if (existingItem) {
+        existingItem.qty += 1;
+      } else {
+        cart.push({ name, price, qty: 1 });
+      }
+      
+      updateCartUI();
+      toggleCart();
+    }
+
+    function updateQty(index, delta) {
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const itemsContainer = document.getElementById('cart-items');
+      const totalEl = document.getElementById('cart-total-price');
+      const counters = document.querySelectorAll('.cart-count');
+      
+      let totalQty = 0;
+      let totalPrice = 0;
+      
+      itemsContainer.innerHTML = '';
+      
+      if (cart.length === 0) {
+        itemsContainer.innerHTML = '<p style="text-align: center; color: var(--muted); margin-top: 40px;">购物车是空的</p>';
+      } else {
+        cart.forEach((item, index) => {
+          totalQty += item.qty;
+          totalPrice += item.price * item.qty;
+          
+          itemsContainer.innerHTML += `
+            <div class="cart-item">
+              <div class="cart-item-info">
+                <h4>${item.name}</h4>
+                <div class="cart-item-price">RM ${item.price}</div>
+              </div>
+              <div class="cart-item-qty">
+                <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
+                <span>${item.qty}</span>
+                <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+              </div>
+            </div>
+          `;
+        });
+      }
+      
+      totalEl.innerText = `RM ${totalPrice}`;
+      counters.forEach(cnt => cnt.innerText = totalQty);
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        alert("您的购物车是空的");
+        return;
+      }
+      
+      let message = "你好，我想购买以下产品：\n";
+      let total = 0;
+      cart.forEach(item => {
+        message += `- ${item.name} x${item.qty} (RM ${item.price * item.qty})\n`;
+        total += item.price * item.qty;
+      });
+      message += `\n总计：RM ${total}`;
+      
+      const whatsappUrl = `https://wa.me/60147982886?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+    }
+
+    // Toggle mute for videos
+    function toggleMute(button) {
+      const video = button.previousElementSibling;
+      if (video && video.tagName.toLowerCase() === 'VIDEO') {
+        video.muted = !video.muted;
+        if (video.muted) {
+          // Muted icon
+          button.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>';
+        } else {
+          // Unmuted icon
+          button.innerHTML = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>';
+          video.play().catch(e => console.log('Playback prevented:', e));
+        }
+      }
+    }
+
+    // Image Comparison Slider logic
+    const sliders = document.querySelectorAll('.comparison-slider');
+    sliders.forEach(slider => {
+      let isDragging = false;
+      const afterImg = slider.querySelector('.comparison-after');
+      const handle = slider.querySelector('.comparison-handle');
+
+      const move = (clientX) => {
+        if (!isDragging) return;
+        const rect = slider.getBoundingClientRect();
+        let position = ((clientX - rect.left) / rect.width) * 100;
+        position = Math.max(0, Math.min(100, position));
+        
+        afterImg.style.clipPath = `inset(0 ${100 - position}% 0 0)`;
+        handle.style.left = `${position}%`;
+      };
+
+      const startDrag = () => {
+        isDragging = true;
+        slider.classList.add('is-dragging');
+      };
+      
+      const stopDrag = () => {
+        isDragging = false;
+        slider.classList.remove('is-dragging');
+      };
+
+      slider.addEventListener('mousedown', startDrag);
+      slider.addEventListener('touchstart', startDrag, { passive: true });
+
+      window.addEventListener('mouseup', stopDrag);
+      window.addEventListener('touchend', stopDrag);
+
+      window.addEventListener('mousemove', (e) => {
+        if (isDragging) move(e.clientX);
+      });
+      window.addEventListener('touchmove', (e) => {
+        if (isDragging) move(e.touches[0].clientX);
+      }, { passive: true });
+    });
+
+    // Disable developer mode (right-click and common shortcuts)
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      if (
+        e.key === 'F12' || 
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && ['I', 'i', 'J', 'j', 'C', 'c'].includes(e.key)) ||
+        ((e.ctrlKey || e.metaKey) && ['U', 'u'].includes(e.key))
+      ) {
+        e.preventDefault();
+      }
+    });
+
+    // Carousel Auto Scroll logic
+    const carousels = document.querySelectorAll('.testimonial-carousel');
+    carousels.forEach(carousel => {
+      let autoScroll;
+      const scrollSpeed = 5000;
+      
+      const startScroll = () => {
+        clearInterval(autoScroll);
+        autoScroll = setInterval(() => {
+          // If a modal/lightbox is active, skip scrolling
+          if (document.getElementById('lightbox') && document.getElementById('lightbox').classList.contains('active')) {
+            return;
+          }
+          
+          let item = carousel.querySelector('.carousel-item');
+          if (!item) return;
+          const scrollStep = item.offsetWidth + 16;
+          
+          if (carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth - 10) {
+            carousel.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            carousel.scrollBy({ left: scrollStep, behavior: 'smooth' });
+          }
+        }, scrollSpeed);
+      };
+      
+      const stopScroll = () => clearInterval(autoScroll);
+
+      // Start by default
+      startScroll();
+      
+      // Pause on hover or touch
+      carousel.addEventListener('mouseenter', stopScroll);
+      carousel.addEventListener('mouseleave', startScroll);
+      carousel.addEventListener('touchstart', stopScroll, { passive: true });
+      carousel.addEventListener('touchend', startScroll);
+    });
+  </script>
+</body>
+</html>
