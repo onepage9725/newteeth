@@ -8,6 +8,11 @@ app.use(cors());
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
+// Health check route to verify the server is running
+app.get('/', (req, res) => {
+  res.send('NewTeeth Backend is running successfully!');
+});
+
 // TODO: Replace with your actual Billplz Sandbox credentials
 const BILLPLZ_SECRET_KEY = '13c37303-e30d-43e7-9fe1-b1ec334295b0';
 const COLLECTION_ID = 'yhvzkwkw';
