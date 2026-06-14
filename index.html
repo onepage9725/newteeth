@@ -2576,28 +2576,51 @@
       btn.disabled = true;
 
       try {
-        const createBillUrl = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost')
-          ? 'http://localhost:3000/api/create-bill'
-          : '/api/create-bill';
+        const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+        const createBillUrls = isLocal
+          ? ['http://localhost:3000/api/create-bill']
+          : ['/api/create-bill', 'https://www.nuteeth.my:3000/api/create-bill'];
 
-        const response = await fetch(createBillUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
+        let data = null;
+        let lastError = null;
 
-        const contentType = response.headers.get('content-type') || '';
-        const data = contentType.includes('application/json')
-          ? await response.json()
-          : { error: await response.text() };
+        for (const createBillUrl of createBillUrls) {
+          try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 12000);
 
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error('API 路由不存在 (404)。请把 /api/create-bill 反向代理到 Node 服务。');
+            const response = await fetch(createBillUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload),
+              signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+
+            const contentType = response.headers.get('content-type') || '';
+            const parsed = contentType.includes('application/json')
+              ? await response.json()
+              : { error: await response.text() };
+
+            if (!response.ok) {
+              if (response.status === 404) {
+                throw new Error('API 路由不存在 (404)。请把 /api/create-bill 反向代理到 Node 服务。');
+              }
+              throw new Error(parsed.error || `请求失败: HTTP ${response.status}`);
+            }
+
+            data = parsed;
+            break;
+          } catch (err) {
+            lastError = err;
           }
-          throw new Error(data.error || `请求失败: HTTP ${response.status}`);
+        }
+
+        if (!data) {
+          throw lastError || new Error('所有支付接口尝试失败');
         }
 
         if (data && data.url && /^https?:\/\//.test(data.url)) {
