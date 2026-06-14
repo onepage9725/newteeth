@@ -2073,7 +2073,7 @@
             </button>
           </div>
           <div class="carousel-item">
-            <video src="testimonial/是佳2不是+3.mp4" autoplay loop muted playsinline aria-label="用户视频分享" onclick="openLightbox(this.src)"></video>
+            <video src="testimonial/是佳2不是3.mp4" autoplay loop muted playsinline aria-label="用户视频分享" onclick="openLightbox(this.src)"></video>
             <button class="sound-toggle" aria-label="开启声音" onclick="toggleMute(this)">
               <svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>
             </button>
@@ -2575,7 +2575,12 @@
       btn.disabled = true;
 
       try {
-        const response = await fetch('http://localhost:3000/api/create-bill', {
+        // Automatically determine backend URL (avoids blocked Mixed Content on HTTPS)
+        const backendUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? 'http://localhost:3000/api/create-bill'
+          : 'https://YOUR_SECURE_BACKEND_URL_HERE/api/create-bill'; // TODO: Replace with your actual deployed Node.js HTTPS server URL
+
+        const response = await fetch(backendUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
