@@ -2300,11 +2300,17 @@
       <p style="text-align: center; color: var(--muted); margin-top: 40px;">购物车是空的</p>
     </div>
     <div class="cart-footer">
+      <div id="checkout-form" style="display: none; flex-direction: column; gap: 8px; margin-bottom: 12px; text-align: left;">
+        <input type="text" id="buyer-name" placeholder="姓名 Name" style="padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
+        <input type="email" id="buyer-email" placeholder="邮箱 Email" style="padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
+        <input type="tel" id="buyer-mobile" placeholder="电话 Mobile" style="padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
+        <textarea id="buyer-address" placeholder="地址 Home Address" style="padding: 8px; border: 1px solid var(--border); border-radius: 6px; resize: vertical;"></textarea>
+      </div>
       <div class="cart-total">
         <span>合计：</span>
         <span id="cart-total-price">RM 0</span>
       </div>
-      <button class="btn btn-primary" style="width: 100%;" onclick="checkout()">前往结算 (WhatsApp)</button>
+      <button class="btn btn-primary" id="checkout-btn" style="width: 100%;" onclick="checkout()">前往结算 (Checkout)</button>
     </div>
   </div>
 
@@ -2527,22 +2533,70 @@
       counters.forEach(cnt => cnt.innerText = totalQty);
     }
 
-    function checkout() {
+    async function checkout() {
       if (cart.length === 0) {
         alert("您的购物车是空的");
         return;
       }
       
-      let message = "你好，我想购买以下产品：\n";
+      const form = document.getElementById('checkout-form');
+      if (form.style.display === 'none') {
+        form.style.display = 'flex';
+        document.getElementById('checkout-btn').innerText = '确认付款 (Pay Now)';
+        return; // Wait for user to fill out form and click again
+      }
+
+      const name = document.getElementById('buyer-name').value.trim();
+      const email = document.getElementById('buyer-email').value.trim();
+      const mobile = document.getElementById('buyer-mobile').value.trim();
+      const address = document.getElementById('buyer-address').value.trim();
+
+      if (!name || !email || !mobile || !address) {
+        alert("请填写所有结账信息 (Please fill in all details).");
+        return;
+      }
+
       let total = 0;
       cart.forEach(item => {
-        message += `- ${item.name} x${item.qty} (RM ${item.price * item.qty})\n`;
         total += item.price * item.qty;
       });
-      message += `\n总计：RM ${total}`;
       
-      const whatsappUrl = `https://wa.me/60147982886?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, '_blank');
+      const btn = document.getElementById('checkout-btn');
+      const originalText = btn.innerText;
+      btn.innerText = '正在加载付款页面...';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch('/api/create-bill', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            amount: total * 100, // Billplz expects cents
+            name: name,
+            email: email,
+            mobile: mobile,
+            address: address,
+            callback_url: window.location.origin + '/payment-callback',
+            redirect_url: window.location.origin + '/'
+          })
+        });
+
+        const data = await response.json();
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert('支付创建失败: ' + (data.error || 'Unknown error'));
+          btn.innerText = originalText;
+          btn.disabled = false;
+        }
+      } catch (e) {
+        console.error(e);
+        alert('无法连接到服务器，请重试');
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }
     }
 
     // Toggle mute for videos
