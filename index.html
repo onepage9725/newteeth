@@ -1420,14 +1420,14 @@
     /* Cart Styles */
     .cart-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5); z-index: 100;
+      background: rgba(0,0,0,0.38); z-index: 45;
       opacity: 0; pointer-events: none; transition: opacity 0.3s;
     }
     .cart-overlay.active { opacity: 1; pointer-events: auto; }
     
     .cart-sidebar {
       position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100%;
-      background: white; z-index: 101; transition: right 0.3s;
+      background: white; z-index: 70; transition: right 0.3s;
       padding: 24px; box-shadow: -5px 0 15px rgba(0,0,0,0.1);
       display: flex; flex-direction: column;
     }
@@ -1440,11 +1440,13 @@
     .cart-header h3 { margin: 0; font-size: 1.4rem; color: var(--primary); }
     .cart-close { font-size: 1.5rem; cursor: pointer; color: var(--muted); }
     
-    .cart-items { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+    .cart-items { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
     .cart-item {
       display: flex; justify-content: space-between; align-items: center;
       padding-bottom: 16px; border-bottom: 1px solid var(--surface-alt);
+      gap: 12px;
     }
+    .cart-item-info { flex: 1; min-width: 0; }
     .cart-item-info h4 { margin: 0 0 4px 0; font-size: 1rem; color: var(--text); }
     .cart-item-price { color: var(--secondary); font-weight: bold; }
     .cart-item-qty { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
@@ -2500,7 +2502,6 @@
 
     function updateCartUI() {
       const itemsContainer = document.getElementById('cart-items');
-      const totalEl = document.getElementById('cart-total-price');
       const counters = document.querySelectorAll('.cart-count');
       
       let totalQty = 0;
