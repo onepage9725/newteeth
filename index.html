@@ -2538,7 +2538,8 @@
         });
       }
       
-      const totalEls = document.querySelectorAll('.cart-total-price-display');\n      totalEls.forEach(el => el.innerText = `RM ${totalPrice}`);
+      const totalEls = document.querySelectorAll('.cart-total-price-display');
+      totalEls.forEach(el => el.innerText = `RM ${totalPrice}`);
       counters.forEach(cnt => cnt.innerText = totalQty);
     }
 
