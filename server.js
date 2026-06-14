@@ -2,8 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-// Enable CORS for frontend requests
-app.use(cors());
+// Enable CORS for local frontend testing
+app.use(cors({
+  origin: 'http://127.0.0.1:5500',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+}));
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -14,34 +18,38 @@ app.get('/', (req, res) => {
 });
 
 // TODO: Replace with your actual Billplz Sandbox credentials
-const BILLPLZ_SECRET_KEY = '13c37303-e30d-43e7-9fe1-b1ec334295b0';
-const COLLECTION_ID = 'yhvzkwkw';
+const BILLPLZ_SANDBOX_API_KEY = 'YOUR_BILLPLZ_SANDBOX_API_KEY';
+const BILLPLZ_COLLECTION_ID = 'YOUR_BILLPLZ_COLLECTION_ID';
 
 app.post('/api/create-bill', async (req, res) => {
   try {
-    const { 
-      amount, 
-      name, 
-      email, 
-      mobile, 
-      callback_url, 
-      redirect_url, 
-      address 
+    const {
+      amount,
+      name,
+      email,
+      mobile,
+      address,
+      redirect_url,
+      callback_url
     } = req.body;
 
+    if (!amount || !name || !email || !mobile || !address || !redirect_url || !callback_url) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
     // Billplz Basic Authentication uses the API key as the username with an empty password
-    const authHeader = 'Basic ' + Buffer.from(`${BILLPLZ_SECRET_KEY}:`).toString('base64');
+    const authHeader = 'Basic ' + Buffer.from(`${BILLPLZ_SANDBOX_API_KEY}:`).toString('base64');
 
     // Create the Billplz bill payload
     const payload = {
-      collection_id: COLLECTION_ID,
+      collection_id: BILLPLZ_COLLECTION_ID,
       description: 'NewTeeth Product Order',
-      email: email,
-      name: name,
-      amount: amount, // Note: Billplz amount is usually in cents (e.g., RM10 = 1000)
-      mobile: mobile,
-      callback_url: callback_url,
-      redirect_url: redirect_url,
+      amount,
+      name,
+      email,
+      mobile,
+      redirect_url,
+      callback_url,
       reference_1_label: 'Home Address',
       reference_1: address
     };

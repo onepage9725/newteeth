@@ -2295,7 +2295,7 @@
       <p style="text-align: center; color: var(--muted); margin-top: 40px;">购物车是空的</p>
     </div>
     <div class="cart-footer">
-      <form id="checkout-form" style="display: none; flex-direction: column; gap: 8px; margin-bottom: 12px; text-align: left;" onsubmit="submitCheckoutForm(event)">
+      <form id="checkout-form" style="display: none; flex-direction: column; gap: 8px; margin-bottom: 12px; text-align: left;">
         <input type="text" id="buyer-name" placeholder="姓名 Name" required style="padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
         <input type="email" id="buyer-email" placeholder="邮箱 Email" required style="padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
         <input type="tel" id="buyer-mobile" placeholder="电话 Mobile" required style="padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
@@ -2555,19 +2555,19 @@
       });
       const amountInCents = total * 100;
 
-      const name = document.getElementById('buyer-name').value;
-      const email = document.getElementById('buyer-email').value;
-      const mobile = document.getElementById('buyer-mobile').value;
-      const address = document.getElementById('buyer-address').value;
+      const name = document.getElementById('buyer-name').value.trim();
+      const email = document.getElementById('buyer-email').value.trim();
+      const mobile = document.getElementById('buyer-mobile').value.trim();
+      const address = document.getElementById('buyer-address').value.trim();
 
       const payload = {
         amount: amountInCents,
-        name: name,
-        email: email,
-        mobile: mobile,
-        address: address,
-        redirect_url: window.location.origin + '/',
-        callback_url: window.location.origin + '/api/callback'
+        name,
+        email,
+        mobile,
+        address,
+        redirect_url: 'http://127.0.0.1:5500/success.html',
+        callback_url: 'http://localhost:3000/api/webhook'
       };
 
       const btn = document.getElementById('final-checkout-btn');
@@ -2576,12 +2576,7 @@
       btn.disabled = true;
 
       try {
-        // Automatically determine backend URL (avoids blocked Mixed Content on HTTPS)
-        const backendUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-          ? 'http://localhost:3000/api/create-bill'
-          : 'https://YOUR_SECURE_BACKEND_URL_HERE/api/create-bill'; // TODO: Replace with your actual deployed Node.js HTTPS server URL
-
-        const response = await fetch(backendUrl, {
+        const response = await fetch('http://localhost:3000/api/create-bill', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -2619,6 +2614,11 @@
           video.play().catch(e => console.log('Playback prevented:', e));
         }
       }
+    }
+
+    const checkoutForm = document.getElementById('checkout-form');
+    if (checkoutForm) {
+      checkoutForm.addEventListener('submit', submitCheckoutForm);
     }
 
     // Image Comparison Slider logic
