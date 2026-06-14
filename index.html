@@ -2567,7 +2567,7 @@
         mobile,
         address,
         redirect_url: 'https://www.nuteeth.my/success.html',
-        callback_url: 'https://www.nuteeth.my/api/webhook'
+        callback_url: 'https://www.nuteeth.my:3000/api/webhook'
       };
 
       const btn = document.getElementById('final-checkout-btn');
@@ -2578,7 +2578,7 @@
       try {
         const createBillUrl = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost')
           ? 'http://localhost:3000/api/create-bill'
-          : '/api/create-bill';
+          : 'https://www.nuteeth.my:3000/api/create-bill';
 
         const response = await fetch(createBillUrl, {
           method: 'POST',
@@ -2588,17 +2588,25 @@
           body: JSON.stringify(payload)
         });
 
-        const data = await response.json();
-        if (data && data.url) {
+        const contentType = response.headers.get('content-type') || '';
+        const data = contentType.includes('application/json')
+          ? await response.json()
+          : { error: await response.text() };
+
+        if (!response.ok) {
+          throw new Error(data.error || `请求失败: HTTP ${response.status}`);
+        }
+
+        if (data && data.url && /^https?:\/\//.test(data.url)) {
           window.location.href = data.url;
         } else {
-          alert('支付创建失败');
+          alert('支付创建失败：后端未返回有效支付链接');
           btn.innerText = originalText;
           btn.disabled = false;
         }
       } catch (e) {
         console.error(e);
-        alert('无法连接到服务器');
+        alert(`无法连接到服务器: ${e.message || '未知错误'}`);
         btn.innerText = originalText;
         btn.disabled = false;
       }
