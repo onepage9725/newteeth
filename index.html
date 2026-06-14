@@ -42,11 +42,6 @@
       color: var(--text);
       background: var(--surface);
       line-height: 1.6;
-      /* Disable highlighting */
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
     }
 
     body.menu-open {
@@ -56,8 +51,6 @@
     img {
       max-width: 100%;
       display: block;
-      /* Disable dragging */
-      -webkit-user-drag: none;
     }
 
     a {
@@ -2663,17 +2656,7 @@
       }, { passive: true });
     });
 
-    // Disable developer mode (right-click and common shortcuts)
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('keydown', e => {
-      if (
-        e.key === 'F12' || 
-        ((e.ctrlKey || e.metaKey) && e.shiftKey && ['I', 'i', 'J', 'j', 'C', 'c'].includes(e.key)) ||
-        ((e.ctrlKey || e.metaKey) && ['U', 'u'].includes(e.key))
-      ) {
-        e.preventDefault();
-      }
-    });
+    // Disable developer mode check removed from here
 
     // Hero Carousel Auto Swipe
     const heroCarouselContainer = document.getElementById('hero-carousel-container');
