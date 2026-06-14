@@ -2567,7 +2567,7 @@
         mobile,
         address,
         redirect_url: 'https://www.nuteeth.my/success.html',
-        callback_url: 'https://www.nuteeth.my:3000/api/webhook'
+        callback_url: 'https://www.nuteeth.my/api/webhook'
       };
 
       const btn = document.getElementById('final-checkout-btn');
@@ -2578,7 +2578,7 @@
       try {
         const createBillUrl = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost')
           ? 'http://localhost:3000/api/create-bill'
-          : 'https://www.nuteeth.my:3000/api/create-bill';
+          : '/api/create-bill';
 
         const response = await fetch(createBillUrl, {
           method: 'POST',
@@ -2594,6 +2594,9 @@
           : { error: await response.text() };
 
         if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error('API 路由不存在 (404)。请把 /api/create-bill 反向代理到 Node 服务。');
+          }
           throw new Error(data.error || `请求失败: HTTP ${response.status}`);
         }
 
