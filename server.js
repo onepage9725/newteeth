@@ -1,5 +1,9 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
+
+// Enable CORS for frontend requests
+app.use(cors());
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -67,7 +71,7 @@ const crypto = require('crypto');
 // Middleware to parse URL-encoded bodies (for webhooks)
 app.use(express.urlencoded({ extended: true }));
 
-const BILLPLZ_X_SIGNATURE_KEY = 'YOUR_X_SIGNATURE_KEY'; // TODO: Replace with your actual Signature Key
+const BILLPLZ_X_SIGNATURE_KEY = 'S-ehD3TfLC1XVQQrkNA7fZkg'; // TODO: Replace with your actual Signature Key
 
 app.post('/api/webhook', (req, res) => {
   const data = req.body;
