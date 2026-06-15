@@ -2601,9 +2601,9 @@
             clearTimeout(timeoutId);
 
             const contentType = response.headers.get('content-type') || '';
-            const parsed = contentType.includes('application/json')
-              ? await response.json()
-              : { error: await response.text() };
+              const parsed = contentType.includes('application/json')
+                ? await response.json()
+                : { error: await response.text() };
 
             if (!response.ok) {
               if (response.status === 404) {
@@ -2615,7 +2615,18 @@
               if (response.status === 405) {
                 throw new Error('请求方式不被允许 (405)。请确认请求已发送到支付后端，而不是静态页面服务器。');
               }
-              const httpError = new Error(parsed.error || `请求失败: HTTP ${response.status}`);
+              let errorMessage = parsed.error || `请求失败: HTTP ${response.status}`;
+              if (parsed.hint) {
+                errorMessage += `\nHint: ${parsed.hint}`;
+              }
+              if (parsed.details) {
+                const detailsText = typeof parsed.details === 'string'
+                  ? parsed.details
+                  : JSON.stringify(parsed.details);
+                errorMessage += `\nDetails: ${detailsText}`;
+              }
+
+              const httpError = new Error(errorMessage);
               httpError.isHttpError = true;
               throw httpError;
             }

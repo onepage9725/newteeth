@@ -2,6 +2,53 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+function normalizeAmountToCents(input) {
+  const amountNumber = Number(input);
+  if (!Number.isFinite(amountNumber)) return null;
+  if (amountNumber <= 0) return null;
+
+  // Accept either cents (integer >= 100) or RM (decimal), always send integer cents.
+  if (Number.isInteger(amountNumber) && amountNumber >= 100) {
+    return amountNumber;
+  }
+
+  return Math.round(amountNumber * 100);
+}
+
+function normalizeMobile(input) {
+  if (!input) return '';
+  const raw = String(input).trim();
+  if (!raw) return '';
+
+  // Billplz expects digits-only Malaysian mobile format, e.g. 60123456789.
+  const digitsOnly = raw.replace(/\D/g, '');
+  if (!digitsOnly) return '';
+
+  let normalized = digitsOnly;
+  if (normalized.startsWith('0')) {
+    normalized = `60${normalized.slice(1)}`;
+  }
+
+  if (normalized.startsWith('6') && !normalized.startsWith('60')) {
+    normalized = `60${normalized.slice(1)}`;
+  }
+
+  if (!/^60\d{8,11}$/.test(normalized)) {
+    return '';
+  }
+
+  return normalized;
+}
+
+function isValidHttpUrl(input) {
+  try {
+    const parsed = new URL(input);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
 // Enable CORS for live site and local testing
 app.use(cors({
   origin: ['https://www.nuteeth.my', 'http://127.0.0.1:5500', 'http://localhost:5500'],
@@ -33,8 +80,25 @@ app.post('/api/create-bill', async (req, res) => {
       callback_url
     } = req.body;
 
-    if (!amount || !name || !email || !mobile || !address || !redirect_url || !callback_url) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    const normalizedAmount = normalizeAmountToCents(amount);
+    const normalizedName = String(name || '').trim();
+    const normalizedEmail = String(email || '').trim().toLowerCase();
+    const normalizedMobile = normalizeMobile(mobile);
+    const normalizedAddress = String(address || '').trim();
+    const normalizedRedirectUrl = String(redirect_url || '').trim();
+    const normalizedCallbackUrl = String(callback_url || '').trim();
+
+    if (!normalizedAmount || !normalizedName || !normalizedEmail || !normalizedRedirectUrl || !normalizedCallbackUrl) {
+      return res.status(400).json({
+        error: 'Missing or invalid required fields',
+        required: ['amount', 'name', 'email', 'redirect_url', 'callback_url']
+      });
+    }
+
+    if (!isValidHttpUrl(normalizedRedirectUrl) || !isValidHttpUrl(normalizedCallbackUrl)) {
+      return res.status(400).json({
+        error: 'redirect_url and callback_url must be valid http/https URLs'
+      });
     }
 
     // Billplz Basic Authentication uses the API key as the username with an empty password
@@ -44,15 +108,18 @@ app.post('/api/create-bill', async (req, res) => {
     const payload = {
       collection_id: BILLPLZ_COLLECTION_ID,
       description: 'NewTeeth Product Order',
-      amount,
-      name,
-      email,
-      mobile,
-      redirect_url,
-      callback_url,
-      reference_1_label: 'Home Address',
-      reference_1: address
+      amount: normalizedAmount,
+      name: normalizedName,
+      email: normalizedEmail,
+      redirect_url: normalizedRedirectUrl,
+      callback_url: normalizedCallbackUrl
     };
+
+    if (normalizedMobile) payload.mobile = normalizedMobile;
+    if (normalizedAddress) {
+      payload.reference_1_label = 'Home Address';
+      payload.reference_1 = normalizedAddress;
+    }
 
     const formPayload = new URLSearchParams();
     Object.entries(payload).forEach(([key, value]) => {
@@ -80,7 +147,11 @@ app.post('/api/create-bill', async (req, res) => {
       const data = contentType.includes('application/json') ? await response.json() : { raw: await response.text() };
 
       if (response.ok) {
-        return res.json({ url: data.url });
+        return res.json({
+          url: data.url,
+          bill_id: data.id,
+          billplz_base_url: baseUrl
+        });
       }
 
       lastResponseStatus = response.status;
@@ -94,11 +165,17 @@ app.post('/api/create-bill', async (req, res) => {
 
     return res.status(lastResponseStatus).json({
       error: 'Failed to create bill',
-      details: lastResponseData
+      details: lastResponseData,
+      hint: lastResponseStatus === 422
+        ? 'Billplz rejected one or more payload fields. Check amount (integer cents), collection_id, email/mobile format, and callback/redirect URLs.'
+        : undefined
     });
   } catch (error) {
     console.error('Error creating bill:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: error && error.message ? error.message : 'Unknown error'
+    });
   }
 });
 
