@@ -4,7 +4,7 @@ const app = express();
 
 // Enable CORS for live site and local testing
 app.use(cors({
-  origin: ['https://www.nuteeth.my', 'http://127.0.0.1:5500'],
+  origin: ['https://www.nuteeth.my', 'http://127.0.0.1:5500', 'http://localhost:5500'],
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type']
 }));
@@ -17,9 +17,9 @@ app.get('/', (req, res) => {
   res.send('NewTeeth Backend is running successfully!');
 });
 
-// TODO: Replace with your actual Billplz Sandbox credentials
-const BILLPLZ_SANDBOX_API_KEY = 'YOUR_BILLPLZ_SANDBOX_API_KEY';
-const BILLPLZ_COLLECTION_ID = 'YOUR_BILLPLZ_COLLECTION_ID';
+const BILLPLZ_API_KEY = process.env.BILLPLZ_API_KEY || process.env.BILLPLZ_SANDBOX_API_KEY || '13c37303-e30d-43e7-9fe1-b1ec334295b0';
+const BILLPLZ_COLLECTION_ID = process.env.BILLPLZ_COLLECTION_ID || 'yhvzkwkw';
+const BILLPLZ_API_BASE_URL = process.env.BILLPLZ_API_BASE_URL || 'https://www.billplz-sandbox.com';
 
 app.post('/api/create-bill', async (req, res) => {
   try {
@@ -38,7 +38,7 @@ app.post('/api/create-bill', async (req, res) => {
     }
 
     // Billplz Basic Authentication uses the API key as the username with an empty password
-    const authHeader = 'Basic ' + Buffer.from(`${BILLPLZ_SANDBOX_API_KEY}:`).toString('base64');
+    const authHeader = 'Basic ' + Buffer.from(`${BILLPLZ_API_KEY}:`).toString('base64');
 
     // Create the Billplz bill payload
     const payload = {
@@ -54,25 +54,48 @@ app.post('/api/create-bill', async (req, res) => {
       reference_1: address
     };
 
-    // Make the POST request to the Sandbox endpoint
-    const response = await fetch('https://www.billplz-sandbox.com/api/v3/bills', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': authHeader
-      },
-      body: JSON.stringify(payload)
+    const formPayload = new URLSearchParams();
+    Object.entries(payload).forEach(([key, value]) => {
+      formPayload.append(key, String(value));
     });
 
-    const data = await response.json();
+    const candidateBaseUrls = process.env.BILLPLZ_API_BASE_URL
+      ? [process.env.BILLPLZ_API_BASE_URL]
+      : [BILLPLZ_API_BASE_URL, 'https://www.billplz.com'];
 
-    // Check if the request was successful
-    if (response.ok) {
-      // Send the payment URL back to the client
-      res.json({ url: data.url });
-    } else {
-      res.status(response.status).json({ error: 'Failed to create bill', details: data });
+    let lastResponseStatus = 500;
+    let lastResponseData = null;
+
+    for (const baseUrl of candidateBaseUrls) {
+      const response = await fetch(`${baseUrl}/api/v3/bills`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: authHeader
+        },
+        body: formPayload.toString()
+      });
+
+      const contentType = response.headers.get('content-type') || '';
+      const data = contentType.includes('application/json') ? await response.json() : { raw: await response.text() };
+
+      if (response.ok) {
+        return res.json({ url: data.url });
+      }
+
+      lastResponseStatus = response.status;
+      lastResponseData = { ...data, billplz_base_url: baseUrl };
+
+      // If unauthorized, try alternate endpoint (sandbox vs production) once.
+      if (response.status !== 401) {
+        break;
+      }
     }
+
+    return res.status(lastResponseStatus).json({
+      error: 'Failed to create bill',
+      details: lastResponseData
+    });
   } catch (error) {
     console.error('Error creating bill:', error);
     res.status(500).json({ error: 'Internal Server Error' });
