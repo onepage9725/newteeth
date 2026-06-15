@@ -2576,10 +2576,7 @@
       btn.disabled = true;
 
       try {
-        const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-        const createBillUrls = isLocal
-          ? ['http://localhost:3000/api/create-bill']
-          : ['/api/create-bill', 'https://www.nuteeth.my:3000/api/create-bill'];
+        const createBillUrls = ['/api/create-bill'];
 
         let data = null;
         let lastError = null;
