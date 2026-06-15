@@ -2566,6 +2566,9 @@
         email,
         mobile,
         address,
+        cart_items_summary: cart
+          .map(item => `${item.name} x${item.qty}`)
+          .join(', '),
         redirect_url: 'https://www.nuteeth.my/success.html',
         callback_url: 'https://www.nuteeth.my/api/webhook'
       };

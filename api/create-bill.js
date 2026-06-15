@@ -66,6 +66,7 @@ module.exports = async function handler(req, res) {
       email,
       mobile,
       address,
+      cart_items_summary,
       redirect_url,
       callback_url,
     } = req.body || {};
@@ -75,6 +76,7 @@ module.exports = async function handler(req, res) {
     const normalizedEmail = String(email || '').trim().toLowerCase();
     const normalizedMobile = normalizeMobile(mobile);
     const normalizedAddress = String(address || '').trim();
+    const normalizedCartSummary = String(cart_items_summary || '').trim();
     const normalizedRedirectUrl = String(redirect_url || '').trim();
     const normalizedCallbackUrl = String(callback_url || '').trim();
 
@@ -101,9 +103,13 @@ module.exports = async function handler(req, res) {
 
     const authHeader = `Basic ${Buffer.from(`${apiKey}:`).toString('base64')}`;
 
+    const billDescription = normalizedCartSummary
+      ? `Order: ${normalizedCartSummary}`.slice(0, 190)
+      : 'NewTeeth Product Order';
+
     const payload = {
       collection_id: collectionId,
-      description: 'NewTeeth Product Order',
+      description: billDescription,
       amount: normalizedAmount,
       name: normalizedName,
       email: normalizedEmail,
@@ -115,6 +121,10 @@ module.exports = async function handler(req, res) {
     if (normalizedAddress) {
       payload.reference_1_label = 'Home Address';
       payload.reference_1 = normalizedAddress;
+    }
+    if (normalizedCartSummary) {
+      payload.reference_2_label = 'Items';
+      payload.reference_2 = normalizedCartSummary.slice(0, 240);
     }
 
     const formBody = new URLSearchParams(
