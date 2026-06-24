@@ -1154,6 +1154,23 @@
       scroll-snap-align: center;
     }
 
+    /* Awards grid */
+    .awards-grid {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .awards-grid img {
+      max-width: 180px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      display: inline-block;
+    }
+
     @media (max-width: 1100px) {
       .nav-menu {
         gap: 4px;
@@ -1697,8 +1714,13 @@
           <p>经过4年的辛勤耕耘，我们荣幸地获得亚洲百强喜爱产品奖。<br>我们将继续致力于为所有马来西亚人提供天然的口腔护理产品</p>
         </div>
         <div class="story-photo reveal" style="text-align: center; margin-top: 24px;">
-          <!-- 图片预留位置 -->
-          <img src="WhatsApp Image 2026-06-13 at 15.42.26.jpeg" alt="超级健康品牌提名" style="display: inline-block; border-radius: var(--radius-lg); box-shadow: var(--shadow); max-width: 100%;">
+          <div class="awards-grid">
+            <img src="IMG_4315.JPG" alt="IMG_4315">
+            <img src="奖项.png" alt="奖项 1">
+            <img src="奖项2.png" alt="奖项 2">
+            <img src="奖项3.png" alt="奖项 3">
+            <img src="奖项4.png" alt="奖项 4">
+          </div>
         </div>
       </div>
     </section>
