@@ -44,6 +44,17 @@
       line-height: 1.6;
     }
 
+    body * {
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    input,
+    textarea {
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
     body.menu-open {
       overflow: hidden;
     }
@@ -51,6 +62,8 @@
     img {
       max-width: 100%;
       display: block;
+      -webkit-user-drag: none;
+      pointer-events: none;
     }
 
     a {
@@ -329,10 +342,10 @@
 
     .hero-media {
       position: relative;
-        width: min(96vw, 1320px);
-      max-width: 100%;
-      margin-left: auto;
-      margin-right: auto;
+      width: 100vw;
+      max-width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      margin-right: calc(-50vw + 50%);
     }
 
     .hero-image {
@@ -1540,23 +1553,24 @@
   <main id="top">
     <section class="hero">
       <div class="container hero-inner">
-        <div class="hero-copy reveal is-visible">
-          <div class="eyebrow">全马口腔护理热销品牌</div>
-          <h1>全马独家首创 No.1</h1>
-        </div>
 
-        <div class="hero-media reveal" style="position: relative;">
-          <div class="hero-carousel-container" id="hero-carousel-container">
-            <img class="hero-image" src="newteethhero1.jpeg" alt="NewTeeth 神龈粉主视觉图 1" onclick="openLightbox(this.src)">
-            <img class="hero-image" src="newteethhero2.jpeg" alt="NewTeeth 神龈粉主视觉图 2" onclick="openLightbox(this.src)">
-            <img class="hero-image" src="newteethhero3.jpeg" alt="NewTeeth 神龈粉主视觉图 3" onclick="openLightbox(this.src)">
+          <div class="hero-media reveal" style="position: relative;">
+            <div class="hero-carousel-container" id="hero-carousel-container">
+              <img class="hero-image" src="Landing Page 2.png" alt="NewTeeth 神龈粉主视觉图 1" onclick="openLightbox(this.src)">
+              <img class="hero-image" src="newteethhero2.jpeg" alt="NewTeeth 神龈粉主视觉图 2" onclick="openLightbox(this.src)">
+              <img class="hero-image" src="newteethhero3.jpeg" alt="NewTeeth 神龈粉主视觉图 3" onclick="openLightbox(this.src)">
+            </div>
           </div>
-        </div>
 
-        <div class="hero-copy reveal">
-          <h2>医用级 纯中药 草本修复牙粉</h2>
-          <p>✨4年内帮助超过40,000人改善口腔问题✨</p>
-        </div>
+          <div class="hero-copy reveal is-visible">
+            <div class="eyebrow">全马口腔护理热销品牌</div>
+            <h1>全马独家首创 No.1</h1>
+          </div>
+
+          <div class="hero-copy reveal">
+            <h2>医用级 纯中药 草本修复牙粉</h2>
+            <p>✨4年内帮助超过40,000人改善口腔问题✨</p>
+          </div>
 
         <div class="hero-actions reveal">
           <a class="btn btn-primary" href="#packages">立即购买</a>
@@ -1992,7 +2006,7 @@
         </div>
 
         <!-- 博主真实回顾轮播 -->
-        <h4 class="testimonial-section-title reveal">博主真实回顾</h4>
+        <h4 class="testimonial-section-title reveal">真实用户反馈</h4>
         <div class="testimonial-carousel reveal">
           <div class="carousel-item">
             <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.04.jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
@@ -2229,7 +2243,7 @@
       <div class="footer-column">
         <img src="NewTeeth Logo white.png" alt="NewTeeth Logo" style="height: 48px; margin-bottom: 16px;">
         <p>全马独创No.1🇲🇾 医用级 纯中药 草本修复牙粉
-2年内帮助30,000人改善口腔问题👍
+4年内帮助40,000人改善口腔问题👍
 已上架全马20+Pharmacy</p>
       </div>
       <div class="footer-column">
@@ -2725,7 +2739,36 @@
       }, { passive: true });
     });
 
-    // Disable developer mode check removed from here
+    // Client-side hardening: block context menu, selection and common DevTools shortcuts.
+    document.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+    });
+
+    document.addEventListener('selectstart', (event) => {
+      const target = event.target;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+        return;
+      }
+      event.preventDefault();
+    });
+
+    document.addEventListener('dragstart', (event) => {
+      event.preventDefault();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      const key = String(event.key || '').toLowerCase();
+      const isMac = /mac/i.test(navigator.platform);
+      const ctrlOrMeta = isMac ? event.metaKey : event.ctrlKey;
+      const blocked =
+        key === 'f12' ||
+        (ctrlOrMeta && event.shiftKey && (key === 'i' || key === 'j' || key === 'c')) ||
+        (ctrlOrMeta && key === 'u');
+
+      if (blocked) {
+        event.preventDefault();
+      }
+    });
 
     // Hero Carousel Auto Swipe
     const heroCarouselContainer = document.getElementById('hero-carousel-container');
