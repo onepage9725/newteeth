@@ -1391,6 +1391,20 @@
     }
 
     /* Image Comparison Slider */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 32px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+
     .comparison-slider {
       position: relative;
       width: 100%;
@@ -1567,7 +1581,6 @@
       <nav class="nav-menu" id="nav-menu" aria-label="主导航">
         <a class="nav-link" href="#packages">神龈粉优惠配套</a>
         <a class="nav-link" href="#shop">店铺</a>
-        <a class="nav-link" href="#sets">配套</a>
         <a class="nav-link" href="#story">我们的故事</a>
         <a class="nav-link" href="#howto">如何使用？</a>
       </nav>
@@ -1919,15 +1932,30 @@
           <p style="font-size: 1.1rem; color: var(--text); font-weight: 500; margin-bottom: 24px;">牙龈修复与牙齿稳固，焕发真正自信笑容 🦷💫<br>效果看得见，用过都说稳！</p>
         </div>
 
-        <div class="comparison-slider reveal">
-          <img class="comparison-before" src="testimonial/Jennie Before1.jpeg" alt="Before">
-          <img class="comparison-after" src="testimonial/Jennie After1.jpeg" alt="After">
-          <div class="comparison-handle">
-            <div class="comparison-button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="15" y1="18" x2="9" y2="12"></line>
-                <line x1="9" y1="6" x2="15" y2="12"></line>
-              </svg>
+        <div class="comparison-grid">
+          <div class="comparison-slider reveal">
+            <img class="comparison-before" src="testimonial/Jennie Before1.jpeg" alt="Before">
+            <img class="comparison-after" src="testimonial/Jennie After1.jpeg" alt="After">
+            <div class="comparison-handle">
+              <div class="comparison-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="15" y1="18" x2="9" y2="12"></line>
+                  <line x1="9" y1="6" x2="15" y2="12"></line>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="comparison-slider reveal">
+            <img class="comparison-before" src="IMG_4317.JPG" alt="Before">
+            <img class="comparison-after" src="IMG_4318.JPG" alt="After">
+            <div class="comparison-handle">
+              <div class="comparison-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="15" y1="18" x2="9" y2="12"></line>
+                  <line x1="9" y1="6" x2="15" y2="12"></line>
+                </svg>
+              </div>
             </div>
           </div>
         </div>
