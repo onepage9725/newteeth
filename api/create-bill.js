@@ -73,8 +73,12 @@ module.exports = async function handler(req, res) {
 
     const normalizedAmount = normalizeAmountToCents(amount);
     const normalizedName = String(name || '').trim();
-    const normalizedEmail = String(email || '').trim().toLowerCase();
     const normalizedMobile = normalizeMobile(mobile);
+    let normalizedEmail = String(email || '').trim().toLowerCase();
+    if (!normalizedEmail) {
+      const cleanMobile = String(mobile || '').replace(/\D/g, '');
+      normalizedEmail = `${cleanMobile || 'customer'}@nuteeth.my`;
+    }
     const normalizedAddress = String(address || '').trim();
     const normalizedCartSummary = String(cart_items_summary || '').trim();
     const normalizedRedirectUrl = String(redirect_url || '').trim();

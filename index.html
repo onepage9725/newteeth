@@ -1487,10 +1487,16 @@
     .cart-overlay.active { opacity: 1; pointer-events: auto; }
     
     .cart-sidebar {
-      position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100%;
+      position: fixed; top: 0; right: -100%; width: 100%; max-width: 100%; height: 100%;
       background: white; z-index: 70; transition: right 0.3s;
       padding: 24px; box-shadow: -5px 0 15px rgba(0,0,0,0.1);
       display: flex; flex-direction: column;
+      overflow-y: auto;
+    }
+    @media (min-width: 768px) {
+      .cart-sidebar {
+        right: -50%; width: 50%; max-width: 50%;
+      }
     }
     .cart-sidebar.active { right: 0; }
     
@@ -1515,6 +1521,71 @@
     
     .cart-footer { padding-top: 16px; border-top: 1px solid var(--border); margin-top: auto; }
     .cart-total { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; margin-bottom: 16px; color: var(--secondary); }
+    
+    /* Checkout Form Styles matching Shopify Checkout */
+    .checkout-section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #111111;
+      margin: 16px 0 8px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .checkout-section-title .sign-in-link {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #1976d2;
+      text-decoration: underline;
+    }
+    .checkout-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .checkout-col {
+      flex: 1;
+      min-width: 0;
+    }
+    .checkout-field-container {
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .checkout-input, .checkout-select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d3d3d3;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: #333333;
+      background-color: #ffffff;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .checkout-input:focus, .checkout-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+    .checkout-input::placeholder {
+      color: #757575;
+    }
+    .checkout-select-wrapper {
+      position: relative;
+    }
+    .checkout-select-wrapper::after {
+      content: "";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid #666666;
+      pointer-events: none;
+    }
     
     .cart-count {
       position: absolute; top: 0px; right: 0px;
@@ -1567,6 +1638,24 @@
     }
     .package-card .btn { margin-top: auto; }
   </style>
+
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1658306321893321');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1658306321893321&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
 
 </head>
 <body>
@@ -2388,10 +2477,78 @@
     </div>
     <div class="cart-footer">
       <form id="checkout-form" style="display: none; flex-direction: column; gap: 8px; margin-bottom: 12px; text-align: left;">
-        <input type="text" id="buyer-name" placeholder="姓名 Name" required style="padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
-        <input type="email" id="buyer-email" placeholder="邮箱 Email" required style="padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
-        <input type="tel" id="buyer-mobile" placeholder="电话 Mobile" required style="padding: 8px; border: 1px solid var(--border); border-radius: 6px;">
-        <textarea id="buyer-address" placeholder="地址 Home Address" required style="padding: 8px; border: 1px solid var(--border); border-radius: 6px; resize: vertical;"></textarea>
+        <div class="checkout-section-title">
+          <span>Email or Phone</span>
+        </div>
+        <div class="checkout-field-container">
+          <input type="email" id="buyer-email" class="checkout-input" placeholder="Email">
+        </div>
+
+        <div class="checkout-section-title">
+          <span>Delivery</span>
+        </div>
+        <div class="checkout-field-container checkout-select-wrapper">
+          <select id="buyer-country" class="checkout-select" required>
+            <option value="Malaysia" selected>Malaysia</option>
+            <option value="Singapore">Singapore</option>
+            <option value="Brunei">Brunei</option>
+            <option value="Indonesia">Indonesia</option>
+            <option value="Thailand">Thailand</option>
+            <option value="Vietnam">Vietnam</option>
+            <option value="Philippines">Philippines</option>
+            <option value="China">China</option>
+            <option value="Taiwan">Taiwan</option>
+            <option value="Hong Kong">Hong Kong</option>
+            <option value="Japan">Japan</option>
+            <option value="South Korea">South Korea</option>
+          </select>
+        </div>
+        <div class="checkout-row">
+          <div class="checkout-col">
+            <input type="text" id="buyer-first-name" class="checkout-input" placeholder="First name (optional)">
+          </div>
+          <div class="checkout-col">
+            <input type="text" id="buyer-last-name" class="checkout-input" placeholder="Last name" required>
+          </div>
+        </div>
+        <div class="checkout-field-container">
+          <input type="text" id="buyer-address" class="checkout-input" placeholder="Address" required>
+        </div>
+        <div class="checkout-field-container">
+          <input type="text" id="buyer-apartment" class="checkout-input" placeholder="Apartment, suite, etc. (optional)">
+        </div>
+        <div class="checkout-row">
+          <div class="checkout-col" style="flex: 0 0 30%;">
+            <input type="text" id="buyer-postcode" class="checkout-input" placeholder="Postcode" required>
+          </div>
+          <div class="checkout-col" style="flex: 0 0 35%;">
+            <input type="text" id="buyer-city" class="checkout-input" placeholder="City" required>
+          </div>
+          <div class="checkout-col checkout-select-wrapper" style="flex: 0 0 35%;">
+            <select id="buyer-state" class="checkout-select" required>
+              <option value="" disabled selected hidden>State/territory</option>
+              <option value="Kuala Lumpur">Kuala Lumpur</option>
+              <option value="Selangor">Selangor</option>
+              <option value="Putrajaya">Putrajaya</option>
+              <option value="Johor">Johor</option>
+              <option value="Penang">Penang</option>
+              <option value="Perak">Perak</option>
+              <option value="Kedah">Kedah</option>
+              <option value="Melaka">Melaka</option>
+              <option value="Negeri Sembilan">Negeri Sembilan</option>
+              <option value="Pahang">Pahang</option>
+              <option value="Kelantan">Kelantan</option>
+              <option value="Terengganu">Terengganu</option>
+              <option value="Perlis">Perlis</option>
+              <option value="Sabah">Sabah</option>
+              <option value="Sarawak">Sarawak</option>
+              <option value="Labuan">Labuan</option>
+            </select>
+          </div>
+        </div>
+        <div class="checkout-field-container">
+          <input type="tel" id="buyer-mobile" class="checkout-input" placeholder="Phone" required>
+        </div>
         
         <div class="cart-total" style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; margin: 16px 0; color: var(--secondary);">
           <span>合计：</span>
@@ -2647,10 +2804,30 @@
       });
       const amountInCents = total * 100;
 
-      const name = document.getElementById('buyer-name').value.trim();
-      const email = document.getElementById('buyer-email').value.trim();
+      const firstName = document.getElementById('buyer-first-name').value.trim();
+      const lastName = document.getElementById('buyer-last-name').value.trim();
+      const name = firstName ? `${firstName} ${lastName}` : lastName;
+
+      const rawEmail = document.getElementById('buyer-email').value.trim();
       const mobile = document.getElementById('buyer-mobile').value.trim();
-      const address = document.getElementById('buyer-address').value.trim();
+      const email = rawEmail || `${mobile.replace(/\D/g, '') || `customer-${Date.now()}`}@nuteeth.my`;
+
+      const streetAddress = document.getElementById('buyer-address').value.trim();
+      const apartment = document.getElementById('buyer-apartment').value.trim();
+      const postcode = document.getElementById('buyer-postcode').value.trim();
+      const city = document.getElementById('buyer-city').value.trim();
+      const state = document.getElementById('buyer-state').value;
+      const country = document.getElementById('buyer-country').value;
+
+      let addressParts = [streetAddress];
+      if (apartment) {
+        addressParts.push(apartment);
+      }
+      addressParts.push(`${postcode} ${city}`);
+      addressParts.push(state);
+      addressParts.push(country);
+
+      const address = addressParts.join(', ');
 
       const payload = {
         amount: amountInCents,
