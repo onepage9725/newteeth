@@ -6,3 +6,5 @@ patch.js
 patch2.js
 patch_server.js
 test.js
+.vercel
+.env*
