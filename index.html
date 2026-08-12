@@ -533,16 +533,42 @@
       position: relative;
     }
 
+    .testimonial-carousel.image-carousel .carousel-item {
+      width: min(360px, 82vw);
+      height: auto;
+      background: var(--white);
+    }
+
     .carousel-item img,
     .carousel-item video {
       width: 100%;
       height: 100%;
-      object-fit: cover;
       display: block;
     }
 
+    .testimonial-carousel.image-carousel .carousel-item img {
+      height: auto;
+      object-fit: contain;
+    }
+    
+      .shop-product-image {
+        width: 100%;
+        height: 380px;
+        border-radius: var(--radius-md);
+        margin-bottom: 20px;
+        object-fit: contain;
+        object-position: center;
+        background: #f6f7fb;
+        padding: 10px;
+      }
+
     .carousel-item img {
+      object-fit: contain;
       background: var(--white);
+    }
+
+    .carousel-item video {
+      object-fit: cover;
     }
 
     .sound-toggle {
@@ -1389,8 +1415,6 @@
     .carousel-item video {
       cursor: pointer;
     }
-
-    /* Image Comparison Slider */
     .comparison-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1692,7 +1716,7 @@
 
           <div class="hero-media reveal" style="position: relative;">
             <div class="hero-carousel-container" id="hero-carousel-container">
-              <img class="hero-image" src="landing-page-2.png" alt="NewTeeth 神龈粉主视觉图 1" onclick="openLightbox(this.src)" onerror="this.onerror=null;this.src='newteethhero.png'">
+              <img class="hero-image" src="newteethhero3.png" alt="NewTeeth 神龈粉主视觉图 1" onclick="openLightbox(this.src)" onerror="this.onerror=null;this.src='newteethhero.png'">
               <img class="hero-image" src="newteethhero2.jpeg" alt="NewTeeth 神龈粉主视觉图 2" onclick="openLightbox(this.src)">
               <img class="hero-image" src="newteethhero3.jpeg" alt="NewTeeth 神龈粉主视觉图 3" onclick="openLightbox(this.src)">
             </div>
@@ -1760,8 +1784,8 @@
 
           <article class="package-card featured reveal">
             <span class="package-badge" style="width: max-content;">最受欢迎 🔥</span>
-            <img src="218.jpeg" alt="RM218配套" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
-            <h4 style="margin-top: 0;">父亲节配套A</h4>
+            <img src="testimonial/testi/Merdeka 配套A.png" alt="Merdeka 配套A" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
+            <h4 style="margin-top: 0;">Merdeka 配套A</h4>
             <p class="package-promo">买二送一再送一</p>
             <div class="price-row">
               <span class="price">RM 218</span>
@@ -1777,8 +1801,8 @@
 
           <article class="package-card reveal">
             <span class="package-badge" style="width: max-content;">超值之选</span>
-            <img src="308.jpeg" alt="RM308配套" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
-            <h4 style="margin-top: 0;">父亲节配套B</h4>
+            <img src="testimonial/testi/Merdeka 配套B.png" alt="Merdeka 配套B" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
+            <h4 style="margin-top: 0;">Merdeka 配套B</h4>
             <p class="package-promo">买三送二</p>
             <div class="price-row">
               <span class="price">RM 308</span>
@@ -1804,19 +1828,25 @@
         </div>
         <div class="shop-grid">
           <article class="product-card reveal">
-            <img src="product-1.png" alt="神龈粉" style="width: 100%; border-radius: var(--radius-md); margin-bottom: 20px; object-fit: cover;">
+            <img class="shop-product-image" src="product-1.png" alt="神龈粉">
             <h4 style="margin-top: 0;">神龈粉</h4>
             <div class="product-price">RM138</div>
             <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
           </article>
           <article class="product-card reveal">
-            <img src="brush.png" alt="万毛纤维牙刷" style="width: 100%; border-radius: var(--radius-md); margin-bottom: 20px; object-fit: cover;">
+            <img class="shop-product-image" src="Nuteeth 2.png" alt="Nuteeth 中药牙膏">
+            <h4 style="margin-top: 0;">Nuteeth 中药牙膏</h4>
+            <div class="product-price">RM138</div>
+            <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
+          </article>
+          <article class="product-card reveal">
+            <img class="shop-product-image" src="brush.png" alt="万毛纤维牙刷">
             <h4 style="margin-top: 0;">万毛纤维牙刷</h4>
             <div class="product-price">RM30</div>
             <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
           </article>
           <article class="product-card reveal">
-            <img src="flosser.png" alt="高频电动冲牙器" style="width: 100%; border-radius: var(--radius-md); margin-bottom: 20px; object-fit: cover;">
+            <img class="shop-product-image" src="flosser.png" alt="高频电动冲牙器">
             <h4 style="margin-top: 0;">高频电动冲牙器（牙龈萎缩/敏感牙齿专用）</h4>
             <div class="product-price">RM199</div>
             <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
@@ -1865,8 +1895,8 @@
         <div class="sets-grid">
           <article class="package-card featured reveal">
             <span class="package-badge" style="width: max-content;">Set 1</span>
-            <img src="218.jpeg" alt="RM218配套" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
-            <h4 style="margin-top: 0;">父亲节配套A</h4>
+            <img src="testimonial/testi/Merdeka 配套A.png" alt="Merdeka 配套A" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
+            <h4 style="margin-top: 0;">Merdeka 配套A</h4>
             <p class="package-promo">买二送一再送一</p>
             <div class="price-row">
               <span class="price">RM 218</span>
@@ -1882,8 +1912,8 @@
 
           <article class="package-card reveal">
             <span class="package-badge" style="width: max-content;">Set 2</span>
-            <img src="308.jpeg" alt="RM308配套" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
-            <h4 style="margin-top: 0;">父亲节配套B</h4>
+            <img src="testimonial/testi/Merdeka 配套B.png" alt="Merdeka 配套B" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
+            <h4 style="margin-top: 0;">Merdeka 配套B</h4>
             <p class="package-promo">买三送二</p>
             <div class="price-row">
               <span class="price">RM 308</span>
@@ -1959,7 +1989,7 @@
           <h3>我们的理念</h3>
         </div>
         <div class="story-card reveal">
-          <div class="story-photo"><img src="packaging.jpeg" alt="NewTeeth 包装展示图"></div>
+          <div class="story-photo"><img src="testimonial/testi/bozhu/NewTeethnew.png" alt="NewTeeth 包装展示图"></div>
           <div class="story-content">
             <h4>我们相信，每个人都应该每天都拥有自信的笑容</h4>
             <div class="story-text">
@@ -2087,144 +2117,40 @@
         </div>
 
         <!-- 图片轮播 -->
-        <h4 class="testimonial-section-title reveal">用户真实对比与反馈</h4>
-        <div class="testimonial-carousel reveal">
-          <div class="carousel-item">
-            <img src="testimonial/513056840_713685928228189_267302444520836039_n.jpg" alt="真实反馈 1" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/516369370_725015727095209_4488206157684639789_n.jpg" alt="真实反馈 2" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/516841311_725591370370978_8681528776946121210_n.jpg" alt="真实反馈 3" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/546589584_775101085420006_6234173641959915640_n.jpg" alt="真实反馈 4" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/547488360_776012751995506_7514813150372175400_n.jpg" alt="真实反馈 5" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-        </div>
-
-
-        <!-- 真实用户反馈轮播 -->
         <h4 class="testimonial-section-title reveal">真实用户反馈</h4>
-        <div class="testimonial-carousel reveal">
+        <div class="testimonial-carousel image-carousel reveal">
           <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.04 (1).jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="testimonial/testi/new testi/newtest1.jpeg" alt="真实用户反馈 1" loading="lazy" onclick="openLightbox(this.src)">
           </div>
           <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.04 (2).jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="testimonial/testi/new testi/newtest2.jpeg" alt="真实用户反馈 2" loading="lazy" onclick="openLightbox(this.src)">
           </div>
           <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.04.jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="testimonial/testi/new testi/newtest3.jpeg" alt="真实用户反馈 3" loading="lazy" onclick="openLightbox(this.src)">
           </div>
           <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.05 (1).jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="testimonial/testi/new testi/newtest4.jpeg" alt="真实用户反馈 4" loading="lazy" onclick="openLightbox(this.src)">
           </div>
           <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.05 (2).jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="testimonial/testi/new testi/newtest5.jpeg" alt="真实用户反馈 5" loading="lazy" onclick="openLightbox(this.src)">
           </div>
           <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.05.jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="testimonial/testi/new testi/newtest6.jpeg" alt="真实用户反馈 6" loading="lazy" onclick="openLightbox(this.src)">
           </div>
           <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.06 (1).jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="testimonial/testi/new testi/newtest7.jpeg" alt="真实用户反馈 7" loading="lazy" onclick="openLightbox(this.src)">
           </div>
           <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.06 (2).jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="testimonial/testi/new testi/newtest8.jpeg" alt="真实用户反馈 8" loading="lazy" onclick="openLightbox(this.src)">
           </div>
           <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.06.jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="testimonial/testi/new testi/newtest9.jpeg" alt="真实用户反馈 9" loading="lazy" onclick="openLightbox(this.src)">
           </div>
           <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.07 (1).jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="testimonial/testi/new testi/newtest10.jpeg" alt="真实用户反馈 10" loading="lazy" onclick="openLightbox(this.src)">
           </div>
           <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.07 (2).jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.07.jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.08 (1).jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.08 (2).jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.08.jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.09 (1).jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.09 (2).jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.09.jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.10 (1).jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/WhatsApp Image 2026-06-11 at 17.29.10.jpeg" alt="真实用户反馈" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-        </div>
-
-        <!-- 博主真实回顾轮播 -->
-        <h4 class="testimonial-section-title reveal">真实用户反馈</h4>
-        <div class="testimonial-carousel reveal">
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.04.jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.06.jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.07 (1).jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.07 (2).jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.07.jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.08 (1).jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.08 (2).jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.08.jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.09 (1).jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.09 (2).jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.09 (3).jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.09.jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.10 (1).jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.10 (2).jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.10.jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.11.jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
-          </div>
-          <div class="carousel-item">
-            <img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.50.54.jpeg" alt="博主真实回顾" loading="lazy" onclick="openLightbox(this.src)">
+            <img src="testimonial/testi/new testi/newtest11.jpeg" alt="真实用户反馈 11" loading="lazy" onclick="openLightbox(this.src)">
           </div>
         </div>
 
@@ -2490,17 +2416,6 @@
         <div class="checkout-field-container checkout-select-wrapper">
           <select id="buyer-country" class="checkout-select" required>
             <option value="Malaysia" selected>Malaysia</option>
-            <option value="Singapore">Singapore</option>
-            <option value="Brunei">Brunei</option>
-            <option value="Indonesia">Indonesia</option>
-            <option value="Thailand">Thailand</option>
-            <option value="Vietnam">Vietnam</option>
-            <option value="Philippines">Philippines</option>
-            <option value="China">China</option>
-            <option value="Taiwan">Taiwan</option>
-            <option value="Hong Kong">Hong Kong</option>
-            <option value="Japan">Japan</option>
-            <option value="South Korea">South Korea</option>
           </select>
         </div>
         <div class="checkout-row">
@@ -2567,7 +2482,7 @@
     </div>
   </div>
 
-  <a class="floating-whatsapp" href="https://wa.me/60147982886" target="_blank" rel="noopener noreferrer" aria-label="立即咨询" data-tooltip="立即咨询">
+  <a class="floating-whatsapp" href="https://wa.me/60147982886?text=PM%E4%BA%86%E8%A7%A3%E4%BA%A7%E5%93%81%E5%92%8C%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener noreferrer" aria-label="立即咨询" data-tooltip="立即咨询">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.52 3.48A11.82 11.82 0 0 0 12.07 0C5.54 0 .21 5.33.21 11.86c0 2.09.55 4.13 1.58 5.93L0 24l6.38-1.67a11.75 11.75 0 0 0 5.68 1.45h.01c6.53 0 11.86-5.33 11.86-11.86 0-3.17-1.24-6.14-3.41-8.44Zm-8.45 18.3h-.01a9.77 9.77 0 0 1-4.97-1.36l-.36-.21-3.79.99 1.02-3.69-.23-.38a9.78 9.78 0 0 1-1.5-5.27C2.23 6.42 6.63 2.02 12.07 2.02a9.8 9.8 0 0 1 6.95 2.88 9.8 9.8 0 0 1 2.88 6.96c0 5.43-4.4 9.92-9.83 9.92Zm5.39-7.4c-.29-.15-1.72-.85-1.99-.95-.27-.1-.46-.15-.66.15-.19.29-.75.95-.92 1.15-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.35-1.43-.87-.78-1.46-1.74-1.64-2.03-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.2-.29.29-.49.1-.19.05-.36-.02-.51-.07-.15-.66-1.6-.9-2.2-.24-.58-.48-.5-.66-.5-.17-.01-.36-.01-.56-.01-.19 0-.51.07-.78.36-.27.29-1.02 1-1.02 2.44s1.05 2.83 1.2 3.02c.15.19 2.07 3.16 5.01 4.43.7.3 1.25.48 1.68.61.71.23 1.36.2 1.87.12.57-.08 1.72-.7 1.97-1.37.24-.66.24-1.22.17-1.34-.07-.12-.27-.19-.56-.34Z"/></svg>
   </a>
 
@@ -3105,6 +3020,15 @@
       carousel.addEventListener('mouseleave', startScroll);
       carousel.addEventListener('touchstart', stopScroll, { passive: true });
       carousel.addEventListener('touchend', startScroll);
+    });
+
+    // Ensure all testimonial images can always open in lightbox.
+    const testimonialImages = document.querySelectorAll('.testimonial-carousel.image-carousel img');
+    testimonialImages.forEach((image) => {
+      image.style.cursor = 'zoom-in';
+      image.addEventListener('click', () => {
+        openLightbox(image.currentSrc || image.src);
+      });
     });
   </script>
 </body>
