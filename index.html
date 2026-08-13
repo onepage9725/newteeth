@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NewTeeth 神龈粉</title>
   <meta name="description" content="NewTeeth 神龈粉，全马独家首创医用级纯中药草本修复牙粉，帮助改善牙龈与口腔问题。">
-  <link rel="icon" href="NewTeeth Logo white.png" type="image/png">
+  <link rel="icon" href="newteeth-logo-white.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -549,6 +549,56 @@
     .testimonial-carousel.image-carousel .carousel-item img {
       height: auto;
       object-fit: contain;
+    }
+
+    .selfie-velocity-loop {
+      margin-top: 12px;
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, rgba(19, 5, 110, 0.04), rgba(19, 5, 110, 0.01));
+      border: 1px solid var(--border);
+      padding: 14px 0;
+    }
+
+    .selfie-velocity-track {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: max-content;
+      animation: selfie-velocity-loop 42s linear infinite;
+      will-change: transform;
+    }
+
+    .selfie-velocity-loop:hover .selfie-velocity-track {
+      animation-play-state: paused;
+    }
+
+    .selfie-velocity-item {
+      flex: 0 0 auto;
+      width: clamp(170px, 18vw, 240px);
+      aspect-ratio: 3 / 4;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .selfie-velocity-item img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center 24%;
+    }
+
+    @keyframes selfie-velocity-loop {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-50%);
+      }
     }
     
       .shop-product-image {
@@ -1190,6 +1240,10 @@
       height: auto;
       display: block;
     }
+    .awards-grid .award-grid-item:nth-child(2) img {
+      width: 92%;
+      margin: 0 auto;
+    }
     @media (max-width: 768px) {
       .awards-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1828,13 +1882,13 @@
         </div>
         <div class="shop-grid">
           <article class="product-card reveal">
-            <img class="shop-product-image" src="product-1.png" alt="神龈粉">
+            <img class="shop-product-image" src="神龈粉new.png" alt="神龈粉">
             <h4 style="margin-top: 0;">神龈粉</h4>
             <div class="product-price">RM138</div>
             <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
           </article>
           <article class="product-card reveal">
-            <img class="shop-product-image" src="Nuteeth 2.png" alt="Nuteeth 中药牙膏">
+            <img class="shop-product-image" src="牙膏new.png" alt="Nuteeth 中药牙膏">
             <h4 style="margin-top: 0;">Nuteeth 中药牙膏</h4>
             <div class="product-price">RM138</div>
             <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
@@ -1843,12 +1897,6 @@
             <img class="shop-product-image" src="brush.png" alt="万毛纤维牙刷">
             <h4 style="margin-top: 0;">万毛纤维牙刷</h4>
             <div class="product-price">RM30</div>
-            <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
-          </article>
-          <article class="product-card reveal">
-            <img class="shop-product-image" src="flosser.png" alt="高频电动冲牙器">
-            <h4 style="margin-top: 0;">高频电动冲牙器（牙龈萎缩/敏感牙齿专用）</h4>
-            <div class="product-price">RM199</div>
             <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
           </article>
         </div>
@@ -1870,16 +1918,16 @@
         </div>
         <div class="awards-grid reveal">
           <div class="award-grid-item">
-            <img src="award.png" alt="亚洲百强喜爱产品奖项 1" onclick="openLightbox(this.src)">
+            <img src="Asia Top 100 (1).png" alt="亚洲百强喜爱产品奖项 1" onclick="openLightbox(this.src)">
           </div>
           <div class="award-grid-item">
-            <img src="award-2.png" alt="亚洲百强喜爱产品奖项 2" onclick="openLightbox(this.src)">
+            <img src="Asia 100.png" alt="亚洲百强喜爱产品奖项 2" onclick="openLightbox(this.src)">
           </div>
           <div class="award-grid-item">
-            <img src="award-3.png" alt="亚洲百强喜爱产品奖项 3" onclick="openLightbox(this.src)">
+            <img src="Super Health Brand.png" alt="亚洲百强喜爱产品奖项 3" onclick="openLightbox(this.src)">
           </div>
           <div class="award-grid-item">
-            <img src="award-4.png" alt="亚洲百强喜爱产品奖项 4" onclick="openLightbox(this.src)">
+            <img src="consumer brand choice.png" alt="亚洲百强喜爱产品奖项 4" onclick="openLightbox(this.src)">
           </div>
         </div>
       </div>
@@ -2098,24 +2146,28 @@
           <div class="stat-cell"><strong>4年</strong><span>专注研发</span></div>
           <div class="stat-cell"><strong>KKM</strong><span>认证</span></div>
         </div>
-        <div class="reviews-grid">
-          <article class="review-card reveal">
-            <div class="review-stars">⭐⭐⭐⭐⭐</div>
-            <h4>陈小姐</h4>
-            <p>用了两个星期后，牙龈出血真的减少很多，刷牙时也不再那么敏感，口气也明显更清新。</p>
-          </article>
-          <article class="review-card reveal">
-            <div class="review-stars">⭐⭐⭐⭐⭐</div>
-            <h4>黄先生</h4>
-            <p>以前吃冷热食物都会酸，现在坚持使用后舒服很多，最重要是刷完真的有种很干净的感觉。</p>
-          </article>
-          <article class="review-card reveal">
-            <div class="review-stars">⭐⭐⭐⭐⭐</div>
-            <h4>林太太</h4>
-            <p>买给家人一起用，大家都说刷完凉凉的很舒服，我自己也感觉牙齿更稳，回购意愿很高。</p>
-          </article>
+        <h4 class="testimonial-section-title reveal">客户自拍反馈</h4>
+        <div class="selfie-velocity-loop reveal" aria-label="客户自拍反馈轮播">
+          <div class="selfie-velocity-track" id="selfie-velocity-track">
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.04.jpeg" alt="客户自拍反馈 1" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.06.jpeg" alt="客户自拍反馈 2" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.07.jpeg" alt="客户自拍反馈 3" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.07 (1).jpeg" alt="客户自拍反馈 4" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.07 (2).jpeg" alt="客户自拍反馈 5" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.08.jpeg" alt="客户自拍反馈 6" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.08 (1).jpeg" alt="客户自拍反馈 7" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.08 (2).jpeg" alt="客户自拍反馈 8" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.09.jpeg" alt="客户自拍反馈 9" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.09 (1).jpeg" alt="客户自拍反馈 10" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.09 (2).jpeg" alt="客户自拍反馈 11" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.09 (3).jpeg" alt="客户自拍反馈 12" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.10.jpeg" alt="客户自拍反馈 13" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.10 (1).jpeg" alt="客户自拍反馈 14" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.10 (2).jpeg" alt="客户自拍反馈 15" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.49.11.jpeg" alt="客户自拍反馈 16" loading="lazy" onclick="openLightbox(this.src)"></div>
+            <div class="selfie-velocity-item"><img src="testimonial/testi/bozhu/WhatsApp Image 2026-06-11 at 17.50.54.jpeg" alt="客户自拍反馈 17" loading="lazy" onclick="openLightbox(this.src)"></div>
+          </div>
         </div>
-
         <!-- 图片轮播 -->
         <h4 class="testimonial-section-title reveal">真实用户反馈</h4>
         <div class="testimonial-carousel image-carousel reveal">
@@ -2334,7 +2386,7 @@
   <footer class="footer">
     <div class="container footer-grid">
       <div class="footer-column">
-        <img src="NewTeeth Logo white.png" alt="NewTeeth Logo" style="height: 48px; margin-bottom: 16px;">
+        <img src="newteeth-logo-white.png" alt="NewTeeth Logo" style="height: 48px; margin-bottom: 16px;">
         <p>全马独创No.1🇲🇾 医用级 纯中药 草本修复牙粉
 4年内帮助40,000人改善口腔问题👍
 已上架全马20+Pharmacy</p>
@@ -3030,6 +3082,23 @@
         openLightbox(image.currentSrc || image.src);
       });
     });
+
+    // Seamless selfie velocity loop: duplicate cards once so translateX(-50%) loops without jumps.
+    const selfieVelocityTrack = document.getElementById('selfie-velocity-track');
+    if (selfieVelocityTrack) {
+      selfieVelocityTrack.insertAdjacentHTML('beforeend', selfieVelocityTrack.innerHTML);
+      const velocityWrapper = selfieVelocityTrack.closest('.selfie-velocity-loop');
+      if (velocityWrapper) {
+        const pauseLoop = () => {
+          selfieVelocityTrack.style.animationPlayState = 'paused';
+        };
+        const resumeLoop = () => {
+          selfieVelocityTrack.style.animationPlayState = 'running';
+        };
+        velocityWrapper.addEventListener('touchstart', pauseLoop, { passive: true });
+        velocityWrapper.addEventListener('touchend', resumeLoop);
+      }
+    }
   </script>
 </body>
 </html>
