@@ -21,7 +21,8 @@
   "homepage": "https://github.com/onepage9725/newteeth#readme",
   "dependencies": {
     "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "sharp": "^0.35.4"
   },
   "devDependencies": {
     "pm2": "^7.0.1"
