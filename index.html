@@ -44,13 +44,7 @@
       line-height: 1.6;
     }
 
-    body * {
-      -webkit-user-select: none;
-      user-select: none;
-    }
-
-    input,
-    textarea {
+    body {
       -webkit-user-select: text;
       user-select: text;
     }
@@ -1824,7 +1818,7 @@
         <div class="packages-grid">
           <article class="package-card reveal">
             <span class="package-badge" style="width: max-content;">入门之选</span>
-            <img src="138.webp" alt="RM138配套" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
+            <img src="new/nuteeth new packaging 3.webp" alt="初体验配套" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
             <h4 style="margin-top: 0;">初体验配套</h4>
             <p class="package-promo">适合首次体验草本修护</p>
             <div class="price-row">
@@ -1838,8 +1832,8 @@
 
           <article class="package-card featured reveal">
             <span class="package-badge" style="width: max-content;">最受欢迎 🔥</span>
-            <img src="testimonial/testi/Merdeka 配套A.webp" alt="Merdeka 配套A" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
-            <h4 style="margin-top: 0;">Merdeka 配套A</h4>
+            <img src="new/nuteeth new packaging 4.webp" alt="双10配套A" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
+            <h4 style="margin-top: 0;">双10配套A</h4>
             <p class="package-promo">买二送一再送一</p>
             <div class="price-row">
               <span class="price">RM 218</span>
@@ -1855,8 +1849,8 @@
 
           <article class="package-card reveal">
             <span class="package-badge" style="width: max-content;">超值之选</span>
-            <img src="testimonial/testi/Merdeka 配套B.webp" alt="Merdeka 配套B" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
-            <h4 style="margin-top: 0;">Merdeka 配套B</h4>
+            <img src="new/new packaging 5.webp" alt="双10配套B" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
+            <h4 style="margin-top: 0;">双10配套B</h4>
             <p class="package-promo">买三送三</p>
             <div class="price-row">
               <span class="price">RM 366</span>
@@ -1882,7 +1876,7 @@
         </div>
         <div class="shop-grid">
           <article class="product-card reveal">
-            <img class="shop-product-image" src="神龈粉new.webp" alt="神龈粉">
+            <img class="shop-product-image" src="new/nuteeth new packaging 1.webp" alt="神龈粉">
             <h4 style="margin-top: 0;">神龈粉</h4>
             <div class="product-price">RM138</div>
             <a class="btn btn-primary" href="javascript:void(0)" onclick="addToCart(this)">加入购物车</a>
@@ -1943,8 +1937,8 @@
         <div class="sets-grid">
           <article class="package-card featured reveal">
             <span class="package-badge" style="width: max-content;">Set 1</span>
-            <img src="testimonial/testi/Merdeka 配套A.webp" alt="Merdeka 配套A" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
-            <h4 style="margin-top: 0;">Merdeka 配套A</h4>
+            <img src="new/nuteeth new packaging 4.webp" alt="双10配套A" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
+            <h4 style="margin-top: 0;">双10配套A</h4>
             <p class="package-promo">买二送一再送一</p>
             <div class="price-row">
               <span class="price">RM 218</span>
@@ -1960,8 +1954,8 @@
 
           <article class="package-card reveal">
             <span class="package-badge" style="width: max-content;">Set 2</span>
-            <img src="testimonial/testi/Merdeka 配套B.webp" alt="Merdeka 配套B" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
-            <h4 style="margin-top: 0;">Merdeka 配套B</h4>
+            <img src="new/new packaging 5.webp" alt="双10配套B" style="width: 100%; border-radius: var(--radius-md); margin: 20px 0; object-fit: cover;">
+            <h4 style="margin-top: 0;">双10配套B</h4>
             <p class="package-promo">买三送三</p>
             <div class="price-row">
               <span class="price">RM 366</span>
@@ -2037,7 +2031,7 @@
           <h3>我们的理念</h3>
         </div>
         <div class="story-card reveal">
-          <div class="story-photo"><img src="testimonial/testi/bozhu/NewTeethnew.webp" alt="NewTeeth 包装展示图"></div>
+          <div class="story-photo"><img src="new/nuteeth new packaging 2.webp" alt="NewTeeth 包装展示图"></div>
           <div class="story-content">
             <h4>我们相信，每个人都应该每天都拥有自信的笑容</h4>
             <div class="story-text">
@@ -2960,35 +2954,8 @@
       }, { passive: true });
     });
 
-    // Client-side hardening: block context menu, selection and common DevTools shortcuts.
-    document.addEventListener('contextmenu', (event) => {
-      event.preventDefault();
-    });
-
-    document.addEventListener('selectstart', (event) => {
-      const target = event.target;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
-        return;
-      }
-      event.preventDefault();
-    });
-
     document.addEventListener('dragstart', (event) => {
       event.preventDefault();
-    });
-
-    document.addEventListener('keydown', (event) => {
-      const key = String(event.key || '').toLowerCase();
-      const isMac = /mac/i.test(navigator.platform);
-      const ctrlOrMeta = isMac ? event.metaKey : event.ctrlKey;
-      const blocked =
-        key === 'f12' ||
-        (ctrlOrMeta && event.shiftKey && (key === 'i' || key === 'j' || key === 'c')) ||
-        (ctrlOrMeta && key === 'u');
-
-      if (blocked) {
-        event.preventDefault();
-      }
     });
 
     // Hero Carousel Auto Swipe
