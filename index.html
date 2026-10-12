@@ -1585,6 +1585,16 @@
       padding-bottom: 16px; border-bottom: 1px solid var(--surface-alt);
       gap: 12px;
     }
+    .cart-item-image {
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+      border-radius: var(--radius-sm);
+      object-fit: contain;
+      background: #f6f7fb;
+      padding: 6px;
+      border: 1px solid var(--border);
+    }
     .cart-item-info { flex: 1; min-width: 0; }
     .cart-item-info h4 { margin: 0 0 4px 0; font-size: 1rem; color: var(--text); }
     .cart-item-price { color: var(--secondary); font-weight: bold; }
@@ -2680,6 +2690,9 @@
     function addToCart(btnElement) {
       const card = btnElement.closest('article');
       const name = card.querySelector('h4').innerText;
+      const imageEl = card.querySelector('img');
+      const imageSrc = imageEl ? imageEl.getAttribute('src') : '';
+      const imageAlt = imageEl ? imageEl.getAttribute('alt') || name : name;
       
       let priceText = "0";
       const priceEl = card.querySelector('.price') || card.querySelector('.product-price');
@@ -2692,7 +2705,7 @@
       if (existingItem) {
         existingItem.qty += 1;
       } else {
-        cart.push({ name, price, qty: 1 });
+        cart.push({ name, price, qty: 1, imageSrc, imageAlt });
       }
       
       updateCartUI();
@@ -2725,6 +2738,7 @@
           
           itemsContainer.innerHTML += `
             <div class="cart-item">
+              ${item.imageSrc ? `<img class="cart-item-image" src="${item.imageSrc}" alt="${item.imageAlt || item.name}">` : ''}
               <div class="cart-item-info">
                 <h4>${item.name}</h4>
                 <div class="cart-item-price">RM ${item.price}</div>
