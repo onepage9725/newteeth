@@ -2988,18 +2988,47 @@
     // Hero Carousel Auto Swipe
     const heroCarouselContainer = document.getElementById('hero-carousel-container');
     if (heroCarouselContainer) {
-      let heroAutoScroll;
-      const startHeroScroll = () => {
-        clearInterval(heroAutoScroll);
-        heroAutoScroll = setInterval(() => {
-          if (heroCarouselContainer.scrollLeft + heroCarouselContainer.offsetWidth >= heroCarouselContainer.scrollWidth - 10) {
-            heroCarouselContainer.scrollTo({ left: 0, behavior: 'smooth' });
-          } else {
-            heroCarouselContainer.scrollBy({ left: heroCarouselContainer.offsetWidth, behavior: 'smooth' });
-          }
-        }, 5000);
+      const heroSlides = Array.from(heroCarouselContainer.querySelectorAll('.hero-image'));
+      const heroScrollIntervalMs = 5000;
+      let heroAutoScroll = null;
+      let heroCurrentIndex = 0;
+
+      const scrollToHeroIndex = (index, behavior = 'smooth') => {
+        heroCurrentIndex = index;
+        heroCarouselContainer.scrollTo({
+          left: heroCarouselContainer.clientWidth * heroCurrentIndex,
+          behavior
+        });
       };
-      const stopHeroScroll = () => clearInterval(heroAutoScroll);
+
+      const resetHeroToFirstImage = () => {
+        scrollToHeroIndex(0, 'auto');
+      };
+
+      const stopHeroScroll = () => {
+        if (heroAutoScroll !== null) {
+          clearInterval(heroAutoScroll);
+          heroAutoScroll = null;
+        }
+      };
+
+      const startHeroScroll = () => {
+        if (heroSlides.length <= 1) return;
+        stopHeroScroll();
+        heroAutoScroll = setInterval(() => {
+          const nextIndex = (heroCurrentIndex + 1) % heroSlides.length;
+          scrollToHeroIndex(nextIndex);
+        }, heroScrollIntervalMs);
+      };
+
+      resetHeroToFirstImage();
+      window.addEventListener('load', resetHeroToFirstImage);
+      window.addEventListener('resize', () => scrollToHeroIndex(heroCurrentIndex, 'auto'));
+      heroCarouselContainer.addEventListener('scroll', () => {
+        const slideWidth = heroCarouselContainer.clientWidth;
+        if (!slideWidth) return;
+        heroCurrentIndex = Math.round(heroCarouselContainer.scrollLeft / slideWidth);
+      }, { passive: true });
 
       startHeroScroll();
       heroCarouselContainer.addEventListener('mouseenter', stopHeroScroll);
