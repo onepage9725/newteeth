@@ -163,6 +163,32 @@
       gap: 12px;
     }
 
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .lang-toggle-btn {
+      border: 0;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 7px 10px;
+      border-radius: 999px;
+      line-height: 1;
+      transition: background-color var(--transition), color var(--transition);
+    }
+
+    .lang-toggle-btn.is-active {
+      background: var(--white);
+      color: var(--primary);
+    }
+
     .icon-button,
     .floating-whatsapp {
       display: inline-flex;
@@ -1309,6 +1335,10 @@
         justify-content: center;
       }
 
+      .lang-toggle {
+        display: none;
+      }
+
       .nav-menu {
         position: absolute;
         top: 100%;
@@ -1762,6 +1792,10 @@
       </nav>
 
       <div class="nav-actions">
+        <div class="lang-toggle" role="group" aria-label="语言切换">
+          <button class="lang-toggle-btn is-active" type="button" data-lang="zh">中文</button>
+          <button class="lang-toggle-btn" type="button" data-lang="en">EN</button>
+        </div>
         <a class="icon-button" href="javascript:void(0)" onclick="toggleCart()" aria-label="购物车" style="position: relative;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
           <div class="cart-count">0</div>
@@ -2606,6 +2640,411 @@
     const sections = Array.from(document.querySelectorAll('main section[id]'));
     const faqItems = Array.from(document.querySelectorAll('.faq-item'));
     const revealItems = Array.from(document.querySelectorAll('.reveal'));
+    const languageButtons = Array.from(document.querySelectorAll('.lang-toggle-btn'));
+    const pageDescription = document.querySelector('meta[name="description"]');
+    const whatsappButton = document.querySelector('.floating-whatsapp');
+    let currentLanguage = 'zh';
+
+    const i18n = {
+      zh: {
+        meta: {
+          title: 'NewTeeth 神龈粉',
+          description: 'NewTeeth 神龈粉，全马独家首创医用级纯中药草本修复牙粉，帮助改善牙龈与口腔问题。'
+        },
+        cart: {
+          empty: '购物车是空的',
+          emptyAlert: '您的购物车是空的',
+          loading: '正在加载付款页面...',
+          checkoutFailed: '支付创建失败：后端未返回有效支付链接',
+          connectFailed: '无法连接到服务器',
+          unknownError: '未知错误',
+          api404: 'API 路由不存在 (404)。请把 /api/create-bill 反向代理到 Node 服务。',
+          api401: '支付网关认证失败 (401)。请检查 Billplz API Key 或 Collection ID 是否正确。',
+          api405: '请求方式不被允许 (405)。请确认请求已发送到支付后端，而不是静态页面服务器。',
+          allFailed: '所有支付接口尝试失败'
+        },
+        whatsapp: {
+          label: '立即咨询',
+          tooltip: '立即咨询',
+          message: 'PM了解产品和价格'
+        },
+        ui: {
+          languageGroupLabel: '语言切换'
+        }
+      },
+      en: {
+        meta: {
+          title: 'NewTeeth Herbal Tooth Powder',
+          description: "NewTeeth Malaysia's No.1 medical-grade pure Chinese herbal tooth powder, helping improve gum and oral health."
+        },
+        cart: {
+          empty: 'Your cart is empty',
+          emptyAlert: 'Your cart is empty',
+          loading: 'Loading payment page...',
+          checkoutFailed: 'Payment creation failed: backend did not return a valid payment link',
+          connectFailed: 'Unable to connect to the server',
+          unknownError: 'Unknown error',
+          api404: 'API route not found (404). Please proxy /api/create-bill to the Node service.',
+          api401: 'Payment gateway authentication failed (401). Please verify Billplz API Key or Collection ID.',
+          api405: 'Request method not allowed (405). Ensure request is sent to payment backend, not static server.',
+          allFailed: 'All payment endpoint attempts failed'
+        },
+        whatsapp: {
+          label: 'Contact us now',
+          tooltip: 'Contact us now',
+          message: 'Hi, I would like to learn about the product and pricing.'
+        },
+        ui: {
+          languageGroupLabel: 'Language switcher'
+        }
+      }
+    };
+
+    const setText = (selector, text) => {
+      const node = document.querySelector(selector);
+      if (node) node.textContent = text;
+    };
+
+    const setHtml = (selector, html) => {
+      const node = document.querySelector(selector);
+      if (node) node.innerHTML = html;
+    };
+
+    const setAttr = (selector, name, value) => {
+      const node = document.querySelector(selector);
+      if (node) node.setAttribute(name, value);
+    };
+
+    const applyLanguage = (lang) => {
+      currentLanguage = lang === 'en' ? 'en' : 'zh';
+      const isEn = currentLanguage === 'en';
+      const pack = i18n[currentLanguage];
+
+      document.documentElement.lang = isEn ? 'en' : 'zh-CN';
+      document.title = pack.meta.title;
+      if (pageDescription) pageDescription.setAttribute('content', pack.meta.description);
+      localStorage.setItem('newteeth-language', currentLanguage);
+
+      languageButtons.forEach((button) => {
+        button.classList.toggle('is-active', button.dataset.lang === currentLanguage);
+      });
+
+      setAttr('.lang-toggle', 'aria-label', pack.ui.languageGroupLabel);
+      setText('.announcement-bar', isEn
+        ? "🇲🇾 Malaysia's No.1 medical-grade pure Chinese herbal tooth powder ✨ Helping 40,000 people improve oral health in 4 years"
+        : '🇲🇾 全马独家首创 No.1 医用级纯中药草本修复牙粉 ✨ 4年内帮助40,000人改善口腔问题');
+      setAttr('.brand', 'aria-label', isEn ? 'NewTeeth homepage' : 'NewTeeth 神龈粉首页');
+      setAttr('.nav-menu', 'aria-label', isEn ? 'Main navigation' : '主导航');
+      setText('.nav-menu .nav-link:nth-child(1)', isEn ? 'NewTeeth Special Offers' : '神龈粉优惠配套');
+      setText('.nav-menu .nav-link:nth-child(2)', isEn ? 'Shop' : '店铺');
+      setText('.nav-menu .nav-link:nth-child(3)', isEn ? 'Our Story' : '我们的故事');
+      setText('.nav-menu .nav-link:nth-child(4)', isEn ? 'How to Use?' : '如何使用？');
+      setAttr('#menu-toggle', 'aria-label', isEn ? 'Open menu' : '打开菜单');
+      setAttr('.nav-actions .icon-button', 'aria-label', isEn ? 'Cart' : '购物车');
+      setAttr('.floating-cart', 'aria-label', isEn ? 'Cart' : '购物车');
+      setAttr('.floating-cart', 'data-tooltip', isEn ? 'View cart' : '查看购物车');
+
+      setText('.hero-copy:nth-of-type(2) .eyebrow', isEn ? "Malaysia's Best-Selling Oral Care Brand" : '全马口腔护理热销品牌');
+      setText('.hero-copy:nth-of-type(2) h1', isEn ? "Malaysia's No.1 Exclusive Innovation" : '全马独家首创 No.1');
+      setText('.hero-copy:nth-of-type(3) h2', isEn ? 'Medical-Grade Pure Chinese Herbal Tooth Powder' : '医用级 纯中药 草本修复牙粉');
+      setText('.hero-copy:nth-of-type(3) p', isEn ? '✨ Helping over 40,000 people improve oral health in 4 years ✨' : '✨4年内帮助超过40,000人改善口腔问题✨');
+      setText('.hero-actions .btn-primary', isEn ? 'Shop Now' : '立即购买');
+      setText('.hero-actions .btn-secondary', isEn ? 'Learn More' : '了解更多');
+
+      setText('main > section:nth-of-type(2) .section-label', isEn ? 'Key Oral Care Benefits' : '核心改善方向');
+      setText('main > section:nth-of-type(2) h3', isEn ? 'NewTeeth Medical-Grade Chinese Herbal Tooth Powder' : 'NewTeeth 医用级中药牙粉');
+      setText('main > section:nth-of-type(2) .section-header p', isEn
+        ? "From gum care and stronger teeth to fresher breath and daily cleaning, NewTeeth's herbal oral care approach supports a more complete oral care routine."
+        : '从牙龈修复到稳固牙齿，再到清新口气与日常清洁，NewTeeth 以草本修护逻辑覆盖更全面的口腔需求。');
+      const benefitTexts = isEn
+        ? ['Gum Recession Care', 'Helps Strengthen Loose Teeth', 'Helps Relieve Gum Swelling and Discomfort', 'Helps Reduce Gum Bleeding', 'Helps Relieve Gum Sensitivity', 'Tartar Control', 'Yellow Teeth & Bad Breath']
+        : ['修复牙龈萎缩', '稳固松牙', '改善牙龈肿痛', '改善牙龈出血', '改善牙龈敏感', '牙结石', '牙黄口臭'];
+      document.querySelectorAll('.benefit-item span:last-child').forEach((node, index) => {
+        if (benefitTexts[index]) node.textContent = benefitTexts[index];
+      });
+      setText('main > section:nth-of-type(2) .testimonial-section-title', isEn ? 'Genuine Customer Feedback' : '真实用户反馈');
+
+      setText('#packages .section-label', isEn ? 'Promotional Package' : '优惠配套');
+      setText('#packages h3', isEn ? 'NewTeeth Special Offers' : '神龈粉优惠配套');
+      setText('#packages .section-header p', isEn
+        ? 'Designed for different stages of use, from trying NewTeeth for the first time to a complete course of care, so you can find the package that suits your needs.'
+        : '针对不同使用阶段设计，从初次尝试到完整疗程，一次选到适合自己的方案。');
+      const packageCards = document.querySelectorAll('#packages .package-card');
+      if (packageCards[0]) {
+        setText('#packages .package-card:nth-child(1) .package-badge', isEn ? 'Starter Pick' : '入门之选');
+        setText('#packages .package-card:nth-child(1) h4', isEn ? 'Trial Package' : '初体验配套');
+        setText('#packages .package-card:nth-child(1) .package-promo', isEn ? 'Perfect for your first herbal oral care experience' : '适合首次体验草本修护');
+        setText('#packages .package-card:nth-child(1) .package-list li:nth-child(1)', isEn ? 'NewTeeth x1' : '神龈粉 x1');
+      }
+      if (packageCards[1]) {
+        setText('#packages .package-card:nth-child(2) .package-badge', isEn ? 'Best Seller 🔥' : '最受欢迎 🔥');
+        setText('#packages .package-card:nth-child(2) h4', isEn ? 'Treatment Package' : '疗程配套');
+        setText('#packages .package-card:nth-child(2) .package-promo', isEn ? 'Buy 2, Get 1 Free + 1 Bonus Gift' : '买二送一再送一');
+        setText('#packages .package-card:nth-child(2) .package-list li:nth-child(1)', isEn ? 'NewTeeth x3' : '神龈粉 x3');
+        setText('#packages .package-card:nth-child(2) .package-list li:nth-child(2)', isEn ? 'Ultra-Soft Toothbrush x1' : '万毛纤维牙刷 x1');
+      }
+      if (packageCards[2]) {
+        setText('#packages .package-card:nth-child(3) .package-badge', isEn ? 'Best Value' : '超值之选');
+        setText('#packages .package-card:nth-child(3) h4', isEn ? '11.11 Early Bird Exclusive Package' : '双11早鸟优惠配套');
+        setText('#packages .package-card:nth-child(3) .package-promo', isEn ? 'Buy 4, Get 4 Free + 17 Bonus Gifts' : '买四送十九');
+        const set3Items = isEn
+          ? ['NewTeeth ×4', 'NewTeeth ×4 (FREE)', 'HH CCC-Certified Power Bank ×1', 'NuTeeth Herbal Toothpaste ×1', 'Ultra-Soft Toothbrush ×4', 'NuTeeth Herbal Toothpaste Travel Set ×4', 'RM25 Discount Vouchers ×4', 'Lucky Draw Tickets ×3']
+          : ['神龈粉 ×4', '神龈粉 ×4（免费）', 'HH CCC认证 PowerBank ×1', 'NuTeeth中药牙膏 ×1', '万毛纤维牙刷 ×4', 'NuTeeth 旅行套装中药牙膏 ×4', 'RM25折扣卷 ×4', '幸运抽奖卷 ×3'];
+        document.querySelectorAll('#packages .package-card:nth-child(3) .package-list li').forEach((node, index) => {
+          if (set3Items[index]) node.textContent = set3Items[index];
+        });
+      }
+      document.querySelectorAll('#packages .btn.btn-primary, #shop .btn.btn-primary, #sets .btn.btn-primary').forEach((node) => {
+        node.textContent = isEn ? 'Add to Cart' : '加入购物车';
+      });
+
+      setText('#shop .section-label', isEn ? 'Featured Products' : '店铺精选');
+      setText('#shop h3', isEn ? 'Shop' : '店铺');
+      setText('#shop .section-header p', isEn
+        ? 'From essential products to supporting oral care tools, build a complete oral care routine in one place.'
+        : '从核心产品到辅助护理工具，一站式打造更完整的口腔保养组合。');
+      setText('#shop .product-card:nth-child(1) h4', isEn ? 'NewTeeth Tooth Powder' : '神龈粉');
+      setText('#shop .product-card:nth-child(2) h4', isEn ? 'NuTeeth Chinese Herbal Toothpaste' : 'Nuteeth 中药牙膏');
+      setText('#shop .product-card:nth-child(3) h4', isEn ? 'Ultra-Soft Toothbrush' : '万毛纤维牙刷');
+
+      setText('#awards .section-label', isEn ? 'Asia Top 100 Favourite Product Award' : '亚洲百强喜爱产品奖');
+      setText('#awards h3', isEn ? 'Asia Top 100 Favourite Product Award — Winner of the Oral Care Brand Award' : '亚洲百强喜爱产品奖——荣获口齿护理品牌大奖');
+      setHtml('#awards .section-header p', isEn
+        ? 'After four years of dedication and hard work, we are honoured to receive the Asia Top 100 Favourite Product Award.<br>We will continue our commitment to providing natural oral care products to all Malaysians.'
+        : '经过4年的辛勤耕耘，我们荣幸地获得亚洲百强喜爱产品奖。<br>我们将继续致力于为所有马来西亚人提供天然的口腔护理产品');
+
+      setText('#sets .section-label', isEn ? 'Package' : '配套');
+      setText('#sets h3', isEn ? 'Package Plans' : '配套方案');
+      setText('#sets .section-header p', isEn ? 'Organised package navigation for easy access to key package options and pricing information.' : '整理自配套导航内容，方便直接查看两组主要方案与价格信息。');
+      setText('#sets .package-card:nth-child(1) h4', isEn ? 'Treatment Package' : '疗程配套');
+      setText('#sets .package-card:nth-child(1) .package-promo', isEn ? 'Buy 2, Get 1 Free + 1 Bonus Gift' : '买二送一再送一');
+      setText('#sets .package-card:nth-child(1) .package-list li:nth-child(1)', isEn ? 'NewTeeth x3' : '神龈粉 x3');
+      setText('#sets .package-card:nth-child(1) .package-list li:nth-child(2)', isEn ? 'Ultra-Soft Toothbrush x1' : '万毛纤维牙刷 x1');
+      setText('#sets .package-card:nth-child(2) h4', isEn ? '11.11 Early Bird Exclusive Package' : '双11早鸟优惠配套');
+      setText('#sets .package-card:nth-child(2) .package-promo', isEn ? 'Buy 4, Get 4 Free + Bonus Gifts' : '买四送十九');
+      document.querySelectorAll('#sets .package-card:nth-child(2) .package-list li').forEach((node, index) => {
+        const setItems = isEn
+          ? ['NewTeeth ×4', 'NewTeeth ×4 (FREE)', 'HH CCC-Certified Power Bank ×1', 'NuTeeth Herbal Toothpaste ×1', 'Ultra-Soft Toothbrush ×4', 'NuTeeth Herbal Toothpaste Travel Set ×4', 'RM25 Discount Vouchers ×4', 'Lucky Draw Tickets ×3']
+          : ['神龈粉 ×4', '神龈粉 ×4（免费）', 'HH CCC认证 PowerBank ×1', 'NuTeeth中药牙膏 ×1', '万毛纤维牙刷 ×4', 'NuTeeth 旅行套装中药牙膏 ×4', 'RM25折扣卷 ×4', '幸运抽奖卷 ×3'];
+        if (setItems[index]) node.textContent = setItems[index];
+      });
+
+      setText('#story .section-label', isEn ? 'Our Brand Mission' : '品牌初心');
+      setText('#story h3', isEn ? 'Our Story' : '我们的故事');
+      setText('#story .story-kicker', isEn ? 'Founder: HH Boss' : '创办人: HH老板');
+      setText('#story h4', isEn ? 'Helping More People Achieve Stable, Healthy, and Confident Smiles' : '让更多人拥有稳定、健康、安心的笑容');
+      setText('#story .story-quote', isEn ? 'Good Products + A Great Team + An Altruistic Mindset + The Right Path + Perseverance = The Formula for Success' : '好的产品＋好的团队＋利他之心＋选对赛道＋坚持＝成功方程式');
+      setText('#story .story-text p:nth-child(1)', isEn ? 'We operate with positive energy and uphold the belief that no matter how high a tree grows, it never forgets its roots, and no matter how successful a person becomes, they should never forget those who helped them along the way.' : '正能量经营，并在个人成长与事业中坚持“树高千丈不忘根，人若辉煌莫忘恩”的理念。');
+      setText('#story .story-text p:nth-child(2)', isEn ? 'Destiny may be predetermined, but fortune is shaped by our own actions. Our future lies in our hands. Through hard work, perseverance, and strong moral character, we can change our destiny.' : '命由天定,运由己造。人的命运掌握在自己手中,自己的前途要靠自己创造,只要肯努力奋斗,和拥有良好的品德修养,就能改变命运。');
+      setText('#story .story-award strong', isEn ? '🏆 Super Healthy Brand — Winner of the Oral Care Brand Award' : '🏆 超级健康品牌 — 荣获口齿护理品牌大奖');
+      setText('#story .story-award p', isEn ? 'After four years of dedication and hard work, we are honoured to be nominated for the Super Healthy Brand Award.' : '经过4年的辛勤耕耘，我们荣幸地获得超级健康品牌提名。');
+
+      setText('#slogan .section-label', isEn ? 'Brand Slogan' : '品牌标语');
+      setText('#slogan h3', isEn ? 'Our Philosophy' : '我们的理念');
+      setText('#slogan h4', isEn ? 'We believe everyone deserves to smile with confidence every day.' : '我们相信，每个人都应该每天都拥有自信的笑容');
+      setText('#slogan .story-text:nth-of-type(1) p:nth-child(1)', isEn ? 'We believe everyone deserves to smile with confidence every day. We have noticed that many people suffer from loose teeth, swollen and painful gums, tooth sensitivity, bleeding gums, and bad breath. These issues affect not only their oral health but also their confidence and daily lives.' : '我们相信，每个人都应该每天都拥有自信的笑容。我们注意到，许多人正饱受牙齿松动、牙龈肿痛，牙龈敏感，牙龈出血，口臭问题的困扰——这些问题不仅影响他们的健康，更会影响他们的自信和日常生活。');
+      setText('#slogan .story-text:nth-of-type(1) p:nth-child(2)', isEn ? 'It is not that people do not want to improve their oral health, but that the market lacks a safe and effective product that addresses gum concerns while improving overall oral health. That is why we created NuTeeth—dedicated to developing gentle, safe, and effective oral care solutions that help people regain their confident smiles.' : '并非人们不想改善口腔健康，而是市场上缺乏一款安全、有效且能在修复牙龈问题的同时改善口腔健康的产品。正因如此，我们创立了NewTeeth——致力于研发温和、安全且真正有效的口齿护理方案，帮助人们重拾自信笑容。');
+      setText('#slogan .story-highlight p:nth-child(1)', isEn ? 'Helping People Address Gum Concerns - This Has Been Our Mission Since Day One. It is Our Purpose and the Reason We Continue Today.' : '帮助人们解决牙龈问题——自创立起便如此。这就是我们的初心，也是我们坚持至今的原因。');
+      setText('#slogan .story-highlight p:nth-child(2)', isEn ? 'Four years on, we have witnessed real change. More than 300,000 people have improved their gum health, gained confidence, and improved daily life for themselves and their families.' : '四年过去了，我们见证了真正的改变。超过 30 万人改善了牙龈问题、提升了自信、改善了日常生活，甚至惠及了整个家庭。');
+      setText('#slogan .story-highlight p:nth-child(3)', isEn ? 'From the very beginning, we have stayed committed to our mission: providing safe, gentle, natural, and truly effective oral care products at affordable prices, without harsh ingredients.' : '从创立之初，我们就始终秉持着我们的使命：提供安全、温和、天然且真正有效的口腔护理产品——价格亲民，不含刺激性成分。');
+      setText('#slogan .story-highlight p:nth-child(4)', isEn ? 'Because everyone deserves healthy, strong teeth and the joy of smiling.' : '因为每个人都值得拥有健康稳固的牙齿，并享受微笑带来的愉悦。');
+
+      setText('#howto .section-label', isEn ? 'How to Use' : '使用说明');
+      setText('#howto h3', isEn ? 'How to Use?' : '如何使用？');
+      setText('#howto .section-header p', isEn ? 'How to use NewTeeth Gum Care Powder correctly' : '怎样正确使用 NewTeeth 神龈粉');
+      const howtoSteps = isEn
+        ? ['Open the box and remove the lid', 'Wet your toothbrush and shake off excess water', 'Dip the toothbrush into the tooth powder', 'Brush for 2–3 minutes as you normally would, using it instead of toothpaste', 'Rinse your mouth after brushing for a refreshing, cooling sensation']
+        : ['打开盒子，打开盖子', '沾湿牙刷，甩掉多余的水份', '沾进牙粉内', '跟平常刷牙一样刷两到三分钟，直接代替牙膏', '漱口冲掉，刷完口腔冰冰凉凉很舒服'];
+      document.querySelectorAll('#howto .timeline-step p').forEach((node, index) => {
+        if (howtoSteps[index]) node.textContent = howtoSteps[index];
+      });
+      setText('#howto .result-callout p', isEn ? '✨ See the difference! Healthier gums, stronger teeth, and a truly confident smile 🦷 Visible results you can see, loved by those who try it!' : '✨ 见证改变！牙龈修复与牙齿稳固，焕发真正自信笑容 🦷 效果看得见，用过都说稳！');
+      setText('#howto .result-callout .btn', isEn ? 'Shop Now!' : '立即购买！');
+
+      setText('#comparison .section-label', isEn ? 'Before & After Comparison' : '效果对比');
+      setText('#comparison h3', isEn ? 'See the Difference! ✨' : '见证改变！✨');
+      setHtml('#comparison .section-header p', isEn ? 'Healthier gums, stronger teeth, and a truly confident smile 🦷💫<br>Visible results, loved by those who try it!' : '牙龈修复与牙齿稳固，焕发真正自信笑容 🦷💫<br>效果看得见，用过都说稳！');
+      setText('#comparison .btn.btn-primary', isEn ? 'Shop Now!' : '立即购买！');
+
+      const feedbackSection = document.querySelector('#comparison + section');
+      if (feedbackSection) {
+        const header = feedbackSection.querySelector('.section-header');
+        if (header) {
+          const label = header.querySelector('.section-label');
+          const title = header.querySelector('h3');
+          const desc = header.querySelector('p');
+          if (label) label.textContent = isEn ? 'Customer Feedback' : '用户反馈';
+          if (title) title.textContent = isEn ? 'Customer Good Reviews' : '用户好评';
+          if (desc) desc.textContent = isEn ? 'From real testimonials to market reach, accumulated trust remains the clearest proof of our brand.' : '从真实用户口碑到市场覆盖，持续累积的信任是品牌最直接的证明。';
+        }
+        const statLabels = isEn ? ['People improved oral health', "Malaysia's No.1 exclusive innovation", 'Years focused on R&D', 'Certified'] : ['改善口腔问题', '全马独家首创', '专注研发', '认证'];
+        feedbackSection.querySelectorAll('.stat-cell span').forEach((node, index) => {
+          if (statLabels[index]) node.textContent = statLabels[index];
+        });
+        const feedbackTitles = feedbackSection.querySelectorAll('.testimonial-section-title');
+        if (feedbackTitles[0]) {
+          feedbackTitles[0].textContent = isEn ? 'Customer Selfie Testimonials' : '客户自拍反馈';
+        }
+        if (feedbackTitles[1]) {
+          feedbackTitles[1].textContent = isEn ? 'Real Customer Testimonial Videos' : '用户的真实分享视频';
+        }
+      }
+      document.querySelectorAll('.testimonial-carousel video').forEach((video) => {
+        video.setAttribute('aria-label', isEn ? 'Customer testimonial video' : '用户视频分享');
+      });
+      document.querySelectorAll('.sound-toggle').forEach((button) => {
+        button.setAttribute('aria-label', isEn ? 'Toggle sound' : '开启声音');
+      });
+
+      setText('#faq .section-label', isEn ? 'Frequently Asked Questions (FAQ)' : '常见问题');
+      setText('#faq h3', isEn ? 'Frequently Asked Questions (FAQ)' : '常见问题');
+      setText('#faq .section-header p', isEn ? 'Find answers to common questions about usage, expected results, and suitability to help you understand the product quickly.' : '把用户最关心的使用方式、效果周期与适用人群整理在这里，方便快速了解。');
+      const faqData = isEn ? [
+        {
+          q: 'Q1: How is NewTeeth Tooth Powder different from toothpaste and other oral care products?',
+          a: "NewTeeth Tooth Powder is 5 times more effective than regular toothpaste at strengthening teeth.<br><br>Specially developed for Malaysians' oral care needs and dietary habits, it combines 14 herbal extracts with a traditional Chinese medicine formula and natural ingredients.<br><br>While supporting gum care, it also helps stengthen tooth roots, soothe inflammation, and prevent varuous oral health problems.<br><br>Using Swiss air-jet milling technology, our ultra-fine tooth powder reaches between teeth for thorough cleaning, even in hard-to-reach areas.<br><br>NewTeeth is more than just gum care; it offers comprehensive support for your gum health."
+        },
+        {
+          q: 'Q2: Can it completely replace toothpaste?',
+          a: 'Yes, absolutely! Our NewTeeth Herbal Tooth Powder can completely replace toothpaste.<br><br>However, we recommend initially combining it with your regular toothpaste. Simply apply toothpaste to your toothbrush, dip it into a small amount of tooth powder, and brush as usual for a better cleaning experience.<br><br>Once you get used to this combination, you can confidently use the tooth powder on its own.'
+        },
+        {
+          q: 'Q3: How long does it take to see results?',
+          a: 'Some customers notice visible improvements in tooth stability in as little as 7 days, while most require 1–4 months to see noticeable improvements.<br><br>The actual timeframe depends on the severity of their gum concerns.<br><br>NewTeeth uses herbal ingredients to support oral care through gentle conditioning and removal of oral bacteria, without relying on medication or harsh chemical ingredients.<br><br>A safe, gentle, and long-lasting oral care solution you can trust.'
+        },
+        {
+          q: 'Q4: Will it damage tooth enamel or the surface of my teeth?',
+          a: "Don't worry! Our Gum Care Powder is formulated with ultra-fine 1,000-mesh particles. For reference, ordinary flour has a particle size of approximately 90 mesh.<br><br>Before certification, it underwent rigorous testing to ensure that it would not cause scratches or damage to tooth enamel.<br><br>Our tooth powder is used similarly to toothpaste; the only difference is its form. It also meets the same high safety and regulatory standards as toothpaste and has received official certification from Malaysia's Ministry of Health (KKM).<br><br>So you can use it with complete peace of mind."
+        },
+        {
+          q: 'Q5: Will my teeth become loose again after I stop using it?',
+          a: 'No, NewTeeth does not cause teeth to become loose or wobbly again.<br><br>Our formula addresses gum health at its source, helping repair and strengthen the supporting structures of the teeth and roots.<br><br>In addition, NewTeeth can replace regilar toothpaste. By helping remove oral bacteria, it helps protect the gums and prevent everyday gum problems.<br><br>Free from harsh ingredients, it helps support healthier gums while reducing everyday gum concerns.<br><br>Gentle, effective, and lasting care for stronger, healthier teeth.'
+        },
+        {
+          q: 'Q6: How long does one jar last?',
+          a: 'One 50g jar typically lasts 1–2 months, depending on how much you use each time.<br><br>On average, most of our customers repurchase every 1–2 months.'
+        },
+        {
+          q: 'Q7: Is it suitable for children?',
+          a: 'Yes, children who have learned to brush and rinse properly can use NewTeeth Tooth Powder safely.<br><br>For children aged 10 and above, it can be used on its own as part of daily oral care.<br><br>For younger children, we recommend using it alongside toothpaste for added protection.<br><br>Simply apply toothpaste, dip into a small amount of powder, and brush as usual.<br><br>During childhood development, teeth are more susceptible to cavities. Using tooth powder alongside toothpaste may help support oral health and prevent tooth decay.'
+        },
+        {
+          q: 'Q8: Is it suitable for vegetarians?',
+          a: 'Yes, our product is formulated with traditional Chinese herbal ingredients and contains no animal-derived ingredients. We are committed to maintaining the highest standards of safety and responsibility, making our product suitable for vegetarians.'
+        },
+        {
+          q: 'Q9: Is it suitable for people with braces, fillings, crowns, dentures, or porcelain veneers?',
+          a: 'Yes! NewTeeth Tooth Powder is safe and effective for people with braces, dentures, crowns, veneers, or other dental concerns.<br><br>Our ultra-fine herbal formula is gentle and non-irritating, cleaning teeth without causing irritation or abrasion.<br><br>The herbal ingredients also help support gum health, especially for people with loose teeth or sensitive gums.<br><br>A gentle yet effective choice to care for every smile.'
+        },
+        {
+          q: 'Q10: What does it taste like?',
+          a: 'Our tooth powder has a refreshing mint flavour that is neither bitter nor astringent, making it enjoyable for both adults and children.<br><br>After every brushing, your mouth will feel fresh and fragrant, with a cool, refreshing sensation.'
+        },
+        {
+          q: 'Q11: Can it help improve bad breath or other oral health problems?',
+          a: 'Yes, absolutely! Our medical-grade herbal tooth powder helps strengthen teeth and fight oral bacteria and inflammation, remove plaque, and prevent tartar buildup—two common contributors to bad breath.<br><br>The herbal ingredients in our formula also help maintain a balanced oral environment, which is essential for fresh breath and good oral health.'
+        }
+      ] : [
+        {
+          q: 'Q1: New Teeth牙粉与牙膏或其他口齿产品有何不同？',
+          a: 'NewTeeth牙粉稳固牙齿的效果是普通牙膏的5倍。<br><br>它专为马来西亚人的口腔需求和饮食习惯而研发，采用14种中药草本精华、结合中医固齿神方与天然草本成分调配而成。<br><br>在修复牙龈的同时，它还能帮助稳固牙根，消炎清热，预防多种口腔问题。<br><br>结合瑞士气流碎粉研磨技术，我们的超细牙粉能够深入牙缝，彻底清洁牙齿，即使是难以触及的部位也能清洁到位。<br><br>New Teeth 不仅仅是护龈，更是对您牙龈健康的全面修复。'
+        },
+        {
+          q: 'Q2: 它可以完全替代牙膏吗？',
+          a: '是的，亲爱的！我们的NewTeeth中药牙粉可以完全替代牙膏。<br><br>不过，我们建议您先将它与您常用的牙膏混合使用——只需先涂抹牙膏，然后蘸取少量牙粉，像往常一样刷牙，即可获得更佳的清洁效果。<br><br>一旦您习惯了这种搭配，就可以放心地单独使用牙粉了。'
+        },
+        {
+          q: 'Q3: 多久才能看到效果？',
+          a: '部分顾客仅需7天即可看到明显的牙齿变稳的效果，而大多数顾客则需1至4个月才能看到明显看到稳固与修复效果，具体时间取决于牙龈问题的严重程度。<br><br>NewTeeth 采用中药草本修复成分，通过温和调理并清除口腔细菌来达到口齿问题，无需药物或刺激性化学成分。<br><br>安全、温和、持久的口齿修复方案，值得信赖。'
+        },
+        {
+          q: 'Q4: 它会损伤牙釉质或牙齿表面吗？',
+          a: '亲爱的，完全不用担心！我们的神龈粉采用1000目超细颗粒配制而成——作为参考，普通面粉的颗粒大小约为90目。<br><br>在获得认证之前，它经过了严格的测试，以确保不会对牙釉质（牙齿的保护层）造成任何划痕或损伤。<br><br>我们的牙粉使用方法与牙膏类似，只是形态不同。它也符合与牙膏相同的高安全性和监管标准，并获得了马来西亚卫生部（KKM）的官方认证。<br><br>所以您可以完全放心使用。'
+        },
+        {
+          q: 'Q5: 停止使用后，我的牙齿会再次摇晃吗？',
+          a: '不，New Teeth 不会导致牙齿反复松动或摇晃。<br><br>我们的配方从根源上调理牙龈，修复并稳固牙齿与牙根的支撑结构。<br><br>不含化学药物或刺激性成分——我们不仅缓解松动问题，更能帮助恢复牙龈的健康。<br><br>此外，New Teeth 可以替代普通牙膏，通过清除口腔细菌，防止其侵蚀牙龈，从而帮助您预防日常牙龈问题的产生。<br><br>温和、有效、持久的护理，让您拥有稳固健康的牙齿。'
+        },
+        {
+          q: 'Q6: 一罐可以用多久？',
+          a: '一罐50克的通常可以使用1到2个月，具体取决于每次的使用量。<br><br>平均而言，我们的大多数客户每1到2个月会再次购买。'
+        },
+        {
+          q: 'Q7: 适合儿童使用吗？',
+          a: '是的，已经学会正确刷牙和漱口的儿童可以安全使用NewTeeth牙粉。<br><br>对于10岁及以上的儿童，我们的牙粉可以单独使用，作为日常口腔护理的一部分。<br><br>对于年龄较小的儿童，我们建议搭配牙膏使用，以增强保护效果。<br><br>只需涂抹牙膏，蘸取少量牙粉，然后像往常一样刷牙即可。<br><br>在儿童的生长发育阶段，牙齿更容易蛀牙，因此将牙粉与牙膏搭配使用，有助于修复牙根，预防蛀牙。'
+        },
+        {
+          q: 'Q8: 适合素食者使用吗？',
+          a: '是的，产品采用中药草本配方，不含动物成分，我们致力于秉持最高的安全标准和责任感，因此我们的产品适合素食者放心使用。'
+        },
+        {
+          q: 'Q9: 适用于佩戴牙套、补牙、牙冠、假牙或陶瓷贴面的人吗？',
+          a: '是的！NewTeeth牙粉安全有效，适合佩戴牙套、假牙、牙冠、牙贴面或其他牙龈问题的人士使用。<br><br>我们超细的草本研磨配方温和不刺激，清洁牙齿的同时不会造成刺激或磨损。<br><br>此外，添加的中药草本成分有助于调理牙龈健康，这对任何牙齿松动牙龈敏感的人来说都至关重要。<br><br>温和而有效的选择，呵护每一位笑容。'
+        },
+        {
+          q: 'Q10: 它是什么口味的？',
+          a: '我们的牙粉拥有清新的薄荷口味，不苦不涩，大人和孩子都会喜欢。<br><br>每次刷牙后，您的口腔都会感觉清新香气，冰冰凉凉的感觉。'
+        },
+        {
+          q: 'Q11: 它能改善口臭或其他口腔问题吗？',
+          a: '是的，亲爱的！我们的中药医用级牙粉不仅能稳固牙齿，更重要的是，它还能帮助对抗口腔细菌和炎症，有效去除牙菌斑，防止牙结石堆积——这两点都是口臭的常见原因。<br><br>此外，我们配方中的草本成分有助于平衡口腔环境，这对于保持口气清新和口腔健康至关重要。'
+        }
+      ];
+      faqItems.forEach((item, index) => {
+        const qNode = item.querySelector('.faq-question span:first-child');
+        const aNode = item.querySelector('.faq-answer-inner p');
+        if (qNode && faqData[index]) qNode.textContent = faqData[index].q;
+        if (aNode && faqData[index]) aNode.innerHTML = faqData[index].a;
+      });
+
+      setText('.footer-column:nth-child(1) p', isEn
+        ? "Malaysia's No.1 exclusive medical-grade pure Chinese herbal gum care powder. Helping 40,000 people improve oral health in 4 years. Available in 20+ pharmacies in Malaysia."
+        : '全马独创No.1🇲🇾 医用级 纯中药 草本修复牙粉\n4年内帮助40,000人改善口腔问题👍\n已上架全马20+Pharmacy');
+      setText('.footer-column:nth-child(2) h4', isEn ? 'Contact Us' : '联系我们');
+      setText('.footer-column:nth-child(3) h4', isEn ? 'Quick Links' : '快速链接');
+      setText('.footer-column:nth-child(4) h4', isEn ? 'Facebook Pages' : 'Facebook 专页');
+      const quickLinks = document.querySelectorAll('.footer-column:nth-child(3) .footer-links a');
+      const quickLinkTexts = isEn ? ['NewTeeth Special Offers', 'Shop', 'Package Plans', 'Our Story', 'How to Use?', 'FAQ'] : ['神龈粉优惠配套', '店铺', '配套', '我们的故事', '如何使用？', '常见问题'];
+      quickLinks.forEach((link, index) => {
+        if (quickLinkTexts[index]) link.textContent = quickLinkTexts[index];
+      });
+      const fbLinks = document.querySelectorAll('.footer-column:nth-child(4) .footer-links a');
+      const fbTexts = isEn ? ['New Teeth Tooth Powder (Main)', 'New Teeth Tooth Powder - MY', 'New Teeth Chinese Herbal Tooth Powder'] : ['New Teeth 神龈粉 (Main)', 'New Teeth 神龈粉 - MY', 'New Teeth 中药神龈粉'];
+      fbLinks.forEach((link, index) => {
+        if (fbTexts[index]) link.textContent = fbTexts[index];
+      });
+      setText('.footer-bottom-inner > div:first-child', isEn ? '© 2025 NewTeeth Herbal Tooth Powder. All rights reserved.' : '© 2025 NewTeeth 神龈粉. 版权所有。');
+      setAttr('.footer-bottom .socials', 'aria-label', isEn ? 'Social media links' : '社交媒体链接');
+      setAttr('.footer-bottom .social-link:nth-child(1)', 'aria-label', isEn ? 'Facebook' : '脸书');
+
+      setText('.cart-header h3', isEn ? 'My Cart' : '我的购物车');
+      setText('#checkout-form .checkout-section-title:nth-child(1) span', isEn ? 'Email or Phone' : '邮箱或手机');
+      setText('#checkout-form .checkout-section-title:nth-child(3) span', isEn ? 'Delivery' : '配送信息');
+      setAttr('#buyer-first-name', 'placeholder', isEn ? 'First name (optional)' : '名字（选填）');
+      setAttr('#buyer-last-name', 'placeholder', isEn ? 'Last name' : '姓氏');
+      setAttr('#buyer-address', 'placeholder', isEn ? 'Address' : '地址');
+      setAttr('#buyer-apartment', 'placeholder', isEn ? 'Apartment, suite, etc. (optional)' : '公寓/门牌号（选填）');
+      setAttr('#buyer-postcode', 'placeholder', isEn ? 'Postcode' : '邮编');
+      setAttr('#buyer-city', 'placeholder', isEn ? 'City' : '城市');
+      setText('#buyer-state option[value=""][disabled]', isEn ? 'State/territory' : '州/地区');
+      setAttr('#buyer-mobile', 'placeholder', isEn ? 'Phone' : '手机号');
+      document.querySelectorAll('.cart-total > span:first-child').forEach((node) => {
+        node.textContent = isEn ? 'Total:' : '合计：';
+      });
+      setText('#final-checkout-btn', isEn ? 'Pay Now' : '确认付款 (Pay Now)');
+      setText('#initial-checkout-container .btn.btn-primary', isEn ? 'Checkout' : '前往结算 (Checkout)');
+
+      if (whatsappButton) {
+        const url = new URL(whatsappButton.href);
+        url.searchParams.set('text', pack.whatsapp.message);
+        whatsappButton.href = url.toString();
+      }
+      setAttr('.floating-whatsapp', 'aria-label', pack.whatsapp.label);
+      setAttr('.floating-whatsapp', 'data-tooltip', pack.whatsapp.tooltip);
+
+      updateCartUI();
+      setHeroOffset();
+    };
 
     const setHeroOffset = () => {
       const announcementHeight = announcementBar ? announcementBar.offsetHeight : 0;
@@ -2692,6 +3131,12 @@
     });
     setHeroOffset();
     activateNav();
+    languageButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        applyLanguage(button.dataset.lang);
+      });
+    });
+    applyLanguage(localStorage.getItem('newteeth-language') || 'zh');
 
 
     // Cart Logic
@@ -2745,7 +3190,7 @@
       itemsContainer.innerHTML = '';
       
       if (cart.length === 0) {
-        itemsContainer.innerHTML = '<p style="text-align: center; color: var(--muted); margin-top: 40px;">购物车是空的</p>';
+        itemsContainer.innerHTML = `<p style="text-align: center; color: var(--muted); margin-top: 40px;">${i18n[currentLanguage].cart.empty}</p>`;
       } else {
         cart.forEach((item, index) => {
           totalQty += item.qty;
@@ -2775,7 +3220,7 @@
 
     function showCheckoutForm() {
       if (cart.length === 0) {
-        alert("您的购物车是空的");
+        alert(i18n[currentLanguage].cart.emptyAlert);
         return;
       }
       document.getElementById('initial-checkout-container').style.display = 'none';
@@ -2831,7 +3276,7 @@
 
       const btn = document.getElementById('final-checkout-btn');
       const originalText = btn.innerText;
-      btn.innerText = '正在加载付款页面...';
+      btn.innerText = i18n[currentLanguage].cart.loading;
       btn.disabled = true;
 
       try {
@@ -2866,13 +3311,13 @@
 
             if (!response.ok) {
               if (response.status === 404) {
-                throw new Error('API 路由不存在 (404)。请把 /api/create-bill 反向代理到 Node 服务。');
+                throw new Error(i18n[currentLanguage].cart.api404);
               }
               if (response.status === 401) {
-                throw new Error('支付网关认证失败 (401)。请检查 Billplz API Key 或 Collection ID 是否正确。');
+                throw new Error(i18n[currentLanguage].cart.api401);
               }
               if (response.status === 405) {
-                throw new Error('请求方式不被允许 (405)。请确认请求已发送到支付后端，而不是静态页面服务器。');
+                throw new Error(i18n[currentLanguage].cart.api405);
               }
               let errorMessage = parsed.error || `请求失败: HTTP ${response.status}`;
               if (parsed.hint) {
@@ -2901,19 +3346,19 @@
         }
 
         if (!data) {
-          throw lastError || new Error('所有支付接口尝试失败');
+          throw lastError || new Error(i18n[currentLanguage].cart.allFailed);
         }
 
         if (data && data.url && /^https?:\/\//.test(data.url)) {
           window.location.href = data.url;
         } else {
-          alert('支付创建失败：后端未返回有效支付链接');
+          alert(i18n[currentLanguage].cart.checkoutFailed);
           btn.innerText = originalText;
           btn.disabled = false;
         }
       } catch (e) {
         console.error(e);
-        alert(`无法连接到服务器: ${e.message || '未知错误'}`);
+        alert(`${i18n[currentLanguage].cart.connectFailed}: ${e.message || i18n[currentLanguage].cart.unknownError}`);
         btn.innerText = originalText;
         btn.disabled = false;
       }
