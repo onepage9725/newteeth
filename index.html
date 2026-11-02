@@ -3492,6 +3492,7 @@
       const videos = carousel.querySelectorAll('video');
       if (videos.length > 0) {
         const videoSection = carousel.closest('section');
+        let isVideoSectionInView = false;
         const playMutedVideos = () => {
           videos.forEach((video) => {
             setVideoMutedState(video, true);
@@ -3505,10 +3506,24 @@
         };
 
         videos.forEach((video) => {
-          video.preload = 'metadata';
+          video.preload = 'auto';
+          video.autoplay = true;
+          video.playsInline = true;
+          video.setAttribute('muted', '');
+          video.setAttribute('playsinline', '');
+          video.setAttribute('webkit-playsinline', '');
           video.removeAttribute('onclick');
           video.style.cursor = 'pointer';
           setVideoMutedState(video, true);
+
+          video.addEventListener('loadeddata', () => {
+            if (video.currentTime < 0.12) {
+              video.currentTime = 0.12;
+            }
+            if (isVideoSectionInView) {
+              video.play().catch(() => {});
+            }
+          });
 
           video.addEventListener('click', () => {
             videos.forEach((otherVideo) => {
@@ -3524,6 +3539,7 @@
         if (videoSection) {
           const sectionObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
+              isVideoSectionInView = entry.isIntersecting;
               if (entry.isIntersecting) {
                 playMutedVideos();
               } else {
@@ -3531,10 +3547,17 @@
               }
             });
           }, {
-            threshold: 0.3
+            threshold: 0.05,
+            rootMargin: '0px 0px -10% 0px'
           });
 
           sectionObserver.observe(videoSection);
+          const sectionRect = videoSection.getBoundingClientRect();
+          const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+          if (sectionRect.top < viewportHeight && sectionRect.bottom > 0) {
+            isVideoSectionInView = true;
+            playMutedVideos();
+          }
         } else {
           playMutedVideos();
         }
