@@ -3364,19 +3364,23 @@
       }
     }
 
+    const mutedSpeakerIcon = '<svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>';
+    const unmutedSpeakerIcon = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>';
+
+    const setVideoMutedState = (video, muted) => {
+      video.muted = muted;
+      const button = video.nextElementSibling;
+      if (button && button.classList.contains('sound-toggle')) {
+        button.innerHTML = muted ? mutedSpeakerIcon : unmutedSpeakerIcon;
+      }
+    };
+
     // Toggle mute for videos
     function toggleMute(button) {
       const video = button.previousElementSibling;
       if (video && video.tagName.toLowerCase() === 'VIDEO') {
-        video.muted = !video.muted;
-        if (video.muted) {
-          // Muted icon
-          button.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM3 9v6h4l5 5V4L7 9H3zm11-7v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>';
-        } else {
-          // Unmuted icon
-          button.innerHTML = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.94s-2.11 6.08-5 6.94v2.06c4.01-.91 7-4.49 7-9s-2.99-8.09-7-9z"/></svg>';
-          video.play().catch(e => console.log('Playback prevented:', e));
-        }
+        setVideoMutedState(video, !video.muted);
+        video.play().catch(e => console.log('Playback prevented:', e));
       }
     }
 
@@ -3487,23 +3491,53 @@
     carousels.forEach(carousel => {
       const videos = carousel.querySelectorAll('video');
       if (videos.length > 0) {
-        const videoObserver = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            const video = entry.target;
-            if (entry.isIntersecting) {
-              video.play().catch(() => {});
-            } else {
-              video.pause();
-            }
+        const videoSection = carousel.closest('section');
+        const playMutedVideos = () => {
+          videos.forEach((video) => {
+            setVideoMutedState(video, true);
+            video.play().catch(() => {});
           });
-        }, {
-          root: carousel,
-          threshold: 0.65
-        });
+        };
+        const pauseVideos = () => {
+          videos.forEach((video) => {
+            video.pause();
+          });
+        };
 
         videos.forEach((video) => {
-          videoObserver.observe(video);
+          video.preload = 'metadata';
+          video.removeAttribute('onclick');
+          video.style.cursor = 'pointer';
+          setVideoMutedState(video, true);
+
+          video.addEventListener('click', () => {
+            videos.forEach((otherVideo) => {
+              if (otherVideo !== video) {
+                setVideoMutedState(otherVideo, true);
+              }
+            });
+            setVideoMutedState(video, false);
+            video.play().catch(() => {});
+          });
         });
+
+        if (videoSection) {
+          const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                playMutedVideos();
+              } else {
+                pauseVideos();
+              }
+            });
+          }, {
+            threshold: 0.3
+          });
+
+          sectionObserver.observe(videoSection);
+        } else {
+          playMutedVideos();
+        }
       }
 
       let autoScroll;
