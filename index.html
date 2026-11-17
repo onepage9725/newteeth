@@ -2644,6 +2644,7 @@
     const pageDescription = document.querySelector('meta[name="description"]');
     const whatsappButton = document.querySelector('.floating-whatsapp');
     let currentLanguage = 'zh';
+    let cart = [];
 
     const i18n = {
       zh: {
@@ -3140,7 +3141,6 @@
 
 
     // Cart Logic
-    let cart = [];
 
     function toggleCart() {
       document.getElementById('cart-overlay').classList.toggle('active');
